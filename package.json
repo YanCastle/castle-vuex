@@ -1,5 +1,5 @@
 {
-  "name": "vuex-store-class",
+  "name": "castle-vuex",
   "version": "1.0.0",
   "main": "dist/index.js",
   "files": [
