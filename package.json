@@ -1,6 +1,6 @@
 {
   "name": "castle-vuex",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "files": [
     "dist/index.js",
@@ -11,6 +11,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YanCastle/castle-vuex.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YanCastle/castle-vuex/issues"
+  },
+  "homepage": "https://github.com/YanCastle/castle-vuex#readme",
   "keywords": [],
   "author": "",
   "license": "ISC",
