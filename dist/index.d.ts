@@ -2,9 +2,10 @@ import * as vuex from 'vuex';
 export interface Request {
     search(Where?: SearchWhere): Promise<SearchResult>;
     add(Data: Object): Promise<Object>;
-    save(Data: Object): Promise<Object>;
-    del(Data: Object): Promise<Object>;
+    save(pk: any, Data: Object): Promise<Object>;
+    del(pk: any): Promise<Object>;
     adds(Data: Object): Promise<Object>;
+    _pk: string;
 }
 export declare class VuexOptions {
     Request?: Request;

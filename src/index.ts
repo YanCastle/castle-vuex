@@ -5,9 +5,10 @@ import * as vuex from 'vuex'
 export interface Request {
     search(Where?: SearchWhere): Promise<SearchResult>,
     add(Data: Object): Promise<Object>
-    save(Data: Object): Promise<Object>
-    del(Data: Object): Promise<Object>
+    save(pk: any, Data: Object): Promise<Object>
+    del(pk: any): Promise<Object>
     adds(Data: Object): Promise<Object>
+    _pk: string
 }
 /**
  * Vuex配置
@@ -192,7 +193,7 @@ export class VuexStore {
     }
     A_SAVE(context: any, data: ActionParams) {
         if (this.__option.Request && this.__option.Request.save) {
-            this.__option.Request.save(data.Data).then((rs) => {
+            this.__option.Request.save(data.Data[this.__option.Request._pk], data.Data).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name + '_SEARCH', rs)
                 action_success(data, rs)
@@ -203,7 +204,7 @@ export class VuexStore {
     }
     A_DEL(context: any, data: ActionParams) {
         if (this.__option.Request && this.__option.Request.del) {
-            this.__option.Request.del(data.Data).then((rs) => {
+            this.__option.Request.del(data.Data[this.__option.Request._pk]).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name + '_SEARCH', rs)
                 action_success(data, rs)
