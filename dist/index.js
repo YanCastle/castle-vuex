@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const vuex_1 = require("vuex");
+const vuex = require("vuex");
 class VuexOptions {
     constructor() {
         this.name = '';
@@ -74,8 +74,8 @@ function vuexFactory(store, option) {
                     };
                     break;
                 case 'A_':
-                    s.actions[ks] = function (state) {
-                        return sclass[k].apply(sclass, [state]);
+                    s.actions[ks] = function (state, data) {
+                        return sclass[k].apply(sclass, [state, data]);
                     };
                     break;
                 case 'M_':
@@ -93,8 +93,8 @@ function vuexFactory(store, option) {
     return s;
 }
 function store(vue, modules) {
-    vue.use(vuex_1.default);
-    return new vuex_1.default.Store({
+    vue.use(vuex);
+    return new vuex.Store({
         getters: {},
         actions: {},
         modules: modules

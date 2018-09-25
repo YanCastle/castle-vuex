@@ -1,3 +1,4 @@
+import * as vuex from 'vuex';
 export interface Request {
     search(Where?: SearchWhere): Promise<SearchResult>;
     add(Data: Object): Promise<Object>;
@@ -11,7 +12,7 @@ export declare class VuexOptions {
     searchOnChange?: boolean;
 }
 export default function Vuex(options: VuexOptions): any;
-export declare function store(vue: any, modules: any): import("vuex").Store<{}>;
+export declare function store(vue: any, modules: any): vuex.Store<{}>;
 export declare class SearchWhere {
     Keyword: string;
     P: number;

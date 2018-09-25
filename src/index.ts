@@ -1,4 +1,4 @@
-import vuex from 'vuex'
+import * as vuex from 'vuex'
 /**
  * 请求库
  */
@@ -93,8 +93,8 @@ function vuexFactory(store, option) {
                     }
                     break;
                 case 'A_':
-                    s.actions[ks] = function (state) {
-                        return sclass[k].apply(sclass, [state])
+                    s.actions[ks] = function (state, data) {
+                        return sclass[k].apply(sclass, [state, data])
                     }
                     break;
                 case 'M_':
