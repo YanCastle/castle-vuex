@@ -171,7 +171,7 @@ export class VuexStore {
     __option: VuexOptions;
     A_SEARCH(context: any, data?: ActionParams) {
         if (this.__option.Request && this.__option.Request.search) {
-            this.__option.Request.search(this.Where).then((rs) => {
+            this.__option.Request.search(context.state.Where).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.commit('M_' + this.__option.name + '_RESULT', rs)
                 action_success(data, rs)
