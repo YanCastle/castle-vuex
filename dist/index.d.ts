@@ -5,6 +5,7 @@ export interface Request {
     save(pk: any, Data: Object): Promise<Object>;
     del(pk: any): Promise<Object>;
     adds(Data: Object): Promise<Object>;
+    delW(W: Object): Promise<any>;
     _pk: string;
 }
 export declare class VuexOptions {
@@ -43,6 +44,7 @@ export declare class VuexStore {
     A_ADD(context: any, data: ActionParams): void;
     A_SAVE(context: any, data: ActionParams): void;
     A_DEL(context: any, data: ActionParams): void;
+    A_DEL_W(context: any, data: ActionParams): void;
     G_RESULT(state: any): any;
     G_WHERE(state: any): any;
     M_WHERE(state: VuexStore, payload: SearchWhere): void;

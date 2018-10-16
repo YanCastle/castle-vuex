@@ -3,12 +3,13 @@ import * as vuex from 'vuex'
  * 请求库
  */
 export interface Request {
-    search(Where?: SearchWhere): Promise<SearchResult>,
-    add(Data: Object): Promise<Object>
-    save(pk: any, Data: Object): Promise<Object>
-    del(pk: any): Promise<Object>
-    adds(Data: Object): Promise<Object>
-    _pk: string
+    search(Where?:SearchWhere):Promise <SearchResult> , 
+    add(Data:Object):Promise <Object> 
+    save(pk:any, Data:Object):Promise <Object> 
+    del(pk:any):Promise <Object> 
+    adds(Data:Object):Promise <Object> 
+    delW(W:Object):Promise <any> 
+    _pk:string
 }
 /**
  * Vuex配置
@@ -17,42 +18,42 @@ export class VuexOptions {
     /**
      * 请求库
      */
-    Request?: Request
+    Request?:Request
     /**
      * module名称，自动追加
      */
-    name?: string = ''
+    name?:string = ''
     /**
      * 数据变更的时候发起查询
      */
-    searchOnChange?: boolean = true
+    searchOnChange?:boolean = true
 }
-export default function Vuex(options: VuexOptions): any {
+export default function Vuex(options:VuexOptions):any {
     return function (store) {
         return vuexFactory(store, options)
     }
 }
-const classes = {};
+const classes =  {}; 
 function vuexFactory(store, option) {
     if (option === void 0) {
-        option = {}
+        option =  {}
     }
 
     option = Object.assign(option, new VuexOptions)
 
-    let name: string = store.name;
+    let name:string = store.name; 
     var sclass = new store()
-    if (!classes[name])
+    if ( !classes[name])
         classes[name] = sclass
     else {
         console.error('VuexStore:重复的VuexStore定义' + name)
     }
     sclass.__option = option
     sclass.__option.name = name.toUpperCase()
-    var s = {
-        state: {},
-        getters: {},
-        actions: {},
+    var s =  {
+        state: {}, 
+        getters: {}, 
+        actions: {}, 
         mutations: {}
     }
 
@@ -60,31 +61,31 @@ function vuexFactory(store, option) {
     if (superProto instanceof VuexStore) {
         //需要控制继承关系
     }
-    Object.keys(sclass).forEach((k) => {
+    Object.keys(sclass).forEach((k) =>  {
         if (typeof sclass[k] == 'function') {
             if (/^([AGM])_([A-Z_\d]{1,})$/.test(k)) {
                 let ks = k.replace(/^([AGM])_/, '$1_' + name.toUpperCase() + '_')
                 switch (k.substr(0, 2)) {
                     case 'G_':
                         s.getters[ks] = sclass[k]
-                        break;
+                        break; 
                     case 'A_':
                         s.actions[ks] = sclass[k]
-                        break;
+                        break; 
                     case 'M_':
                         s.mutations[ks] = sclass[k]
-                        break;
+                        break; 
                 }
-            } else {
+            }else {
                 console.error('Vuex方法名称不符合规范:' + name + '.' + k)
             }
-        } else {
+        }else {
             if (k.substr(0, 2) !== '__')
                 s.state[k] = sclass[k]
         }
     })
     let methods = [...Object.getOwnPropertyNames(Object.getPrototypeOf(store.prototype)), ...Object.getOwnPropertyNames(store.prototype)]
-    methods.forEach(k => {
+    methods.forEach(k =>  {
         if (/^([AGM])_([A-Z_\d]{1,})$/.test(k)) {
             let ks = k.replace(/^([AGM])_/, '$1_' + name.toUpperCase() + '_')
             switch (k.substr(0, 2)) {
@@ -92,24 +93,24 @@ function vuexFactory(store, option) {
                     s.getters[ks] = function (state) {
                         return sclass[k].apply(sclass, [state])
                     }
-                    break;
+                    break; 
                 case 'A_':
                     s.actions[ks] = function (state, data) {
                         return sclass[k].apply(sclass, [state, data])
                     }
-                    break;
+                    break; 
                 case 'M_':
                     s.mutations[ks] = function (state, payload) {
                         return sclass[k].apply(sclass, [state, payload])
                     }
-                    break;
+                    break; 
             }
-        } else {
+        }else {
             if (['constructor'].indexOf(k) === -1)
                 console.error('Vuex方法名称不符合规范:' + name + '.' + k)
         }
     })
-    return s;
+    return s; 
 }
 /**
  * 
@@ -118,46 +119,46 @@ function vuexFactory(store, option) {
  */
 export function store(vue, modules) {
     vue.use(vuex)
-    return new vuex.Store({
-        getters: {},
-        actions: {},
-        modules: modules
+    return new vuex.Store( {
+        getters: {}, 
+        actions: {}, 
+        modules:modules
     })
 }
 /**
  * 查询条件
  */
 export class SearchWhere {
-    Keyword: string = ''
-    P: number = 1
-    N: number = 10
-    Sort: string = ''
-    W: { [index: string]: any } = {}
+    Keyword:string = ''
+    P:number = 1
+    N:number = 10
+    Sort:string = ''
+    W: {[index:string]:any } =  {}
 }
 /**
  * 查询结果
  */
 export class SearchResult {
-    L: any[] = []
-    P: number = 0
-    N: number = 0
-    T: number = 0
-    R?: any = {}
+    L:any[] = []
+    P:number = 0
+    N:number = 0
+    T:number = 0
+    R?:any =  {}
 }
 /**
  * 
  */
 export class ActionParams {
-    Success: Function
-    Error: Function
-    Data: Object
+    Success:Function
+    Error:Function
+    Data:Object
 }
-function action_success(data: ActionParams, result: any) {
+function action_success(data:ActionParams, result:any) {
     if (data && data.Success instanceof Function) {
         data.Success(result)
     }
 }
-function action_error(data: ActionParams, result: any) {
+function action_error(data:ActionParams, result:any) {
     if (data && data.Error instanceof Function) {
         data.Error(result)
     }
@@ -166,78 +167,91 @@ function action_error(data: ActionParams, result: any) {
  * VuexStore类
  */
 export class VuexStore {
-    Result: SearchResult = new SearchResult()
-    Where: SearchWhere = new SearchWhere()
-    __option: VuexOptions;
-    A_SEARCH(context: any, data?: ActionParams) {
+    Result:SearchResult = new SearchResult()
+    Where:SearchWhere = new SearchWhere()
+    __option:VuexOptions; 
+    A_SEARCH(context:any, data?:ActionParams) {
         if (this.__option.Request && this.__option.Request.search) {
-            this.__option.Request.search(context.state.Where).then((rs) => {
+            this.__option.Request.search(context.state.Where).then((rs) =>  {
                 if (this.__option.searchOnChange !== false)
                     context.commit('M_' + this.__option.name + '_RESULT', rs)
                 action_success(data, rs)
-            }).catch((e) => {
+            }).catch((e) =>  {
                 action_error(data, e)
             })
         }
     }
-    A_ADD(context: any, data: ActionParams) {
+    A_ADD(context:any, data:ActionParams) {
         if (this.__option.Request && this.__option.Request.add) {
-            this.__option.Request.add(data.Data).then((rs) => {
+            this.__option.Request.add(data.Data).then((rs) =>  {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name + '_SEARCH', rs)
                 action_success(data, rs)
-            }).catch((e) => {
+            }).catch((e) =>  {
                 action_error(data, e)
             })
         }
     }
-    A_SAVE(context: any, data: ActionParams) {
+    A_SAVE(context:any, data:ActionParams) {
         if (this.__option.Request && this.__option.Request.save) {
-            this.__option.Request.save(data.Data[this.__option.Request._pk], data.Data).then((rs) => {
+            this.__option.Request.save(data.Data[this.__option.Request._pk], data.Data).then((rs) =>  {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name + '_SEARCH', rs)
                 action_success(data, rs)
-            }).catch((e) => {
+            }).catch((e) =>  {
                 action_error(data, e)
             })
         }
     }
-    A_DEL(context: any, data: ActionParams) {
+    A_DEL(context:any, data:ActionParams) {
         if (this.__option.Request && this.__option.Request.del) {
-            this.__option.Request.del(data.Data[this.__option.Request._pk]).then((rs) => {
+            this.__option.Request.del(data.Data[this.__option.Request._pk]).then((rs) =>  {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name + '_SEARCH', rs)
                 action_success(data, rs)
-            }).catch((e) => {
+            }).catch((e) =>  {
                 action_error(data, e)
             })
         }
     }
-    G_RESULT(state: any) {
-        return state.Result;
+    A_DEL_W(context:any, data:ActionParams) {
+        if (this.__option.Request && this.__option.Request.delW) {
+            this.__option.Request.delW({W:data.Data}).then((rs)=>{
+                if (this.__option.searchOnChange !== false){
+                    context.state.Where.W={}
+                    context.dispatch('A_' + this.__option.name + '_SEARCH', context.state.Where);
+                }
+                action_success(data, rs);
+            }).catch((e) => {
+                action_error(data, e);
+            });
+        }
     }
-    G_WHERE(state: any) {
-        return state.Where;
+    G_RESULT(state:any) {
+        return state.Result; 
     }
-    M_WHERE(state: VuexStore, payload: SearchWhere) {
-        state.Where = payload;
+    G_WHERE(state:any) {
+        return state.Where; 
     }
-    M_WHERE_W(state: VuexStore, payload: any) {
-        state.Where.W = payload;
+    M_WHERE(state:VuexStore, payload:SearchWhere) {
+        state.Where = payload; 
     }
-    M_WHERE_P(state: VuexStore, p: number) {
-        state.Where.P = p;
+    M_WHERE_W(state:VuexStore, payload:any) {
+        state.Where.W = payload; 
     }
-    M_WHERE_N(state: VuexStore, n: number) {
-        state.Where.N = n;
+    M_WHERE_P(state:VuexStore, p:number) {
+        state.Where.P = p; 
     }
-    M_WHERE_KEYWORD(state: VuexStore, keyword: string) {
+    M_WHERE_N(state:VuexStore, n:number) {
+        state.Where.N = n; 
+    }
+    M_WHERE_KEYWORD(state:VuexStore, keyword:string) {
         state.Where.Keyword = keyword
     }
-    M_WHERE_SORT(state: VuexStore, sort: string) {
+    M_WHERE_SORT(state:VuexStore, sort:string) {
         state.Where.Sort = sort
     }
-    M_RESULT(state: VuexStore, rs: SearchResult) {
-        state.Result = rs;
+    M_RESULT(state:VuexStore, rs:SearchResult) {
+        state.Result = rs; 
     }
 }
