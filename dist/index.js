@@ -183,6 +183,19 @@ class VuexStore {
             });
         }
     }
+    A_DEL_W(context, data) {
+        if (this.__option.Request && this.__option.Request.delW) {
+            this.__option.Request.delW({ W: data.Data }).then((rs) => {
+                if (this.__option.searchOnChange !== false) {
+                    context.state.Where.W = {};
+                    context.dispatch('A_' + this.__option.name + '_SEARCH', context.state.Where);
+                }
+                action_success(data, rs);
+            }).catch((e) => {
+                action_error(data, e);
+            });
+        }
+    }
     G_RESULT(state) {
         return state.Result;
     }
