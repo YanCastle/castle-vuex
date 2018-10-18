@@ -196,6 +196,15 @@ class VuexStore {
             });
         }
     }
+    A_IMPORT(context, data) {
+        if (this.__option.Request && this.__option.Request.add) {
+            this.__option.Request.add(data.Data).then((rs) => {
+                action_success(data, rs);
+            }).catch((e) => {
+                action_error(data, e);
+            });
+        }
+    }
     G_RESULT(state) {
         return state.Result;
     }
