@@ -3,21 +3,12 @@ import * as vuex from 'vuex'
  * 请求库
  */
 export interface Request {
-<<<<<<< HEAD
     search(Where?:SearchWhere):Promise <SearchResult> , 
     add(Data:Object):Promise <Object> 
     save(pk:any, Data:Object):Promise <Object> 
     del(pk:any):Promise <Object> 
     adds(Data:Object):Promise <Object> 
     delW(W:Object):Promise <any> 
-=======
-    search(Where?:SearchWhere):Promise < SearchResult > , 
-    add(Data:Object):Promise < Object > 
-    save(pk:any, Data:Object):Promise < Object > 
-    del(pk:any):Promise < Object > 
-    adds(Data:Object):Promise < Object > 
-    delW(W:Object):Promise < any > 
->>>>>>> dd25effa7343c043eb7e4eab567dabb8f410d077
     _pk:string
 }
 /**
@@ -52,11 +43,7 @@ function vuexFactory(store, option) {
 
     let name:string = store.name; 
     var sclass = new store()
-<<<<<<< HEAD
     if ( !classes[name])
-=======
-    if ( ! classes[name])
->>>>>>> dd25effa7343c043eb7e4eab567dabb8f410d077
         classes[name] = sclass
     else {
         console.error('VuexStore:重复的VuexStore定义' + name)
@@ -238,6 +225,16 @@ export class VuexStore {
             }).catch((e) => {
                 action_error(data, e);
             });
+        }
+    }
+    A_IMPORT(context:any,data:ActionParams){
+        if (this.__option.Request && this.__option.Request.add) {
+            this.__option.Request.add(data.Data).then((rs) =>  {
+                // if (this.__option.searchOnChange !== false)
+                action_success(data, rs)
+            }).catch((e) =>  {
+                action_error(data, e)
+            })
         }
     }
     G_RESULT(state:any) {
