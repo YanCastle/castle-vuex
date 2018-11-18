@@ -170,6 +170,7 @@ function action_error(data:ActionParams, result:any) {
 export class VuexStore {
     Result:SearchResult = new SearchResult()
     Where:SearchWhere = new SearchWhere()
+    ClassName:string="'
     __option:VuexOptions; 
     A_SEARCH(context:any, data?:ActionParams) {
         if (this.__option.Request && this.__option.Request.search) {
