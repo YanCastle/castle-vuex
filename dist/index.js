@@ -28,7 +28,8 @@ function vuexFactory(store, option) {
         console.error('VuexStore:重复的VuexStore定义' + name);
     }
     sclass.__option = option;
-    sclass.__option.name = name.toUpperCase();
+    sclass.__option.name = sclass.ClassName;
+    name = sclass.ClassName;
     var s = {
         state: {},
         getters: {},
@@ -138,6 +139,7 @@ class VuexStore {
     constructor() {
         this.Result = new SearchResult();
         this.Where = new SearchWhere();
+        this.ClassName = "";
     }
     A_SEARCH(context, data) {
         if (this.__option.Request && this.__option.Request.search) {
