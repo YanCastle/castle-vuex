@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var vuex = require("vuex");
 var VuexOptions = (function () {
     function VuexOptions() {
@@ -14,7 +14,7 @@ function Vuex(options) {
         return vuexFactory(store, options);
     };
 }
-exports.default = Vuex;
+exports["default"] = Vuex;
 var classes = {};
 function vuexFactory(store, option) {
     if (option === void 0) {
@@ -29,7 +29,8 @@ function vuexFactory(store, option) {
         console.error('VuexStore:重复的VuexStore定义' + name);
     }
     sclass.__option = option;
-    sclass.__option.name = name.toUpperCase();
+    sclass.__option.name = sclass.ClassName;
+    name = sclass.ClassName;
     var s = {
         state: {},
         getters: {},
@@ -144,6 +145,7 @@ var VuexStore = (function () {
     function VuexStore() {
         this.Result = new SearchResult();
         this.Where = new SearchWhere();
+        this.ClassName = "";
     }
     VuexStore.prototype.A_SEARCH = function (context, data) {
         var _this = this;
@@ -152,7 +154,7 @@ var VuexStore = (function () {
                 if (_this.__option.searchOnChange !== false)
                     context.commit('M_' + _this.__option.name + '_RESULT', rs);
                 action_success(data, rs);
-            }).catch(function (e) {
+            })["catch"](function (e) {
                 action_error(data, e);
             });
         }
@@ -164,7 +166,7 @@ var VuexStore = (function () {
                 if (_this.__option.searchOnChange !== false)
                     context.dispatch('A_' + _this.__option.name + '_SEARCH', rs);
                 action_success(data, rs);
-            }).catch(function (e) {
+            })["catch"](function (e) {
                 action_error(data, e);
             });
         }
@@ -176,7 +178,7 @@ var VuexStore = (function () {
                 if (_this.__option.searchOnChange !== false)
                     context.dispatch('A_' + _this.__option.name + '_SEARCH', rs);
                 action_success(data, rs);
-            }).catch(function (e) {
+            })["catch"](function (e) {
                 action_error(data, e);
             });
         }
@@ -188,7 +190,7 @@ var VuexStore = (function () {
                 if (_this.__option.searchOnChange !== false)
                     context.dispatch('A_' + _this.__option.name + '_SEARCH', rs);
                 action_success(data, rs);
-            }).catch(function (e) {
+            })["catch"](function (e) {
                 action_error(data, e);
             });
         }
@@ -202,7 +204,7 @@ var VuexStore = (function () {
                     context.dispatch('A_' + _this.__option.name + '_SEARCH', context.state.Where);
                 }
                 action_success(data, rs);
-            }).catch(function (e) {
+            })["catch"](function (e) {
                 action_error(data, e);
             });
         }
@@ -211,7 +213,7 @@ var VuexStore = (function () {
         if (this.__option.Request && this.__option.Request.add) {
             this.__option.Request.add(data.Data).then(function (rs) {
                 action_success(data, rs);
-            }).catch(function (e) {
+            })["catch"](function (e) {
                 action_error(data, e);
             });
         }

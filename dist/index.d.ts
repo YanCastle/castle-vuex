@@ -39,6 +39,7 @@ export declare class ActionParams {
 export declare class VuexStore {
     Result: SearchResult;
     Where: SearchWhere;
+    ClassName: string;
     __option: VuexOptions;
     A_SEARCH(context: any, data?: ActionParams): void;
     A_ADD(context: any, data: ActionParams): void;

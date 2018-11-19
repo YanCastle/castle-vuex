@@ -49,7 +49,8 @@ function vuexFactory(store, option) {
         console.error('VuexStore:重复的VuexStore定义' + name)
     }
     sclass.__option = option
-    sclass.__option.name = name.toUpperCase()
+    sclass.__option.name = sclass.ClassName
+    name = sclass.ClassName
     var s =  {
         state: {}, 
         getters: {}, 
@@ -169,6 +170,7 @@ function action_error(data:ActionParams, result:any) {
 export class VuexStore {
     Result:SearchResult = new SearchResult()
     Where:SearchWhere = new SearchWhere()
+    ClassName:string=""
     __option:VuexOptions; 
     A_SEARCH(context:any, data?:ActionParams) {
         if (this.__option.Request && this.__option.Request.search) {
