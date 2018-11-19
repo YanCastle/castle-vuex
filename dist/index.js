@@ -152,7 +152,7 @@ var VuexStore = (function () {
         if (this.__option.Request && this.__option.Request.search) {
             this.__option.Request.search(context.state.Where).then(function (rs) {
                 if (_this.__option.searchOnChange !== false)
-                    context.commit('M_' + _this.__option.name + '_RESULT', rs);
+                    context.commit('M_' + _this.__option.name.toLocaleUpperCase() + '_RESULT', rs);
                 action_success(data, rs);
             })["catch"](function (e) {
                 action_error(data, e);
@@ -164,7 +164,7 @@ var VuexStore = (function () {
         if (this.__option.Request && this.__option.Request.add) {
             this.__option.Request.add(data.Data).then(function (rs) {
                 if (_this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + _this.__option.name + '_SEARCH', rs);
+                    context.dispatch('A_' + _this.__option.name.toLocaleUpperCase() + '_SEARCH', rs);
                 action_success(data, rs);
             })["catch"](function (e) {
                 action_error(data, e);
@@ -176,7 +176,7 @@ var VuexStore = (function () {
         if (this.__option.Request && this.__option.Request.save) {
             this.__option.Request.save(data.Data[this.__option.Request._pk], data.Data).then(function (rs) {
                 if (_this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + _this.__option.name + '_SEARCH', rs);
+                    context.dispatch('A_' + _this.__option.name.toLocaleUpperCase() + '_SEARCH', rs);
                 action_success(data, rs);
             })["catch"](function (e) {
                 action_error(data, e);
@@ -188,7 +188,7 @@ var VuexStore = (function () {
         if (this.__option.Request && this.__option.Request.del) {
             this.__option.Request.del(data.Data[this.__option.Request._pk]).then(function (rs) {
                 if (_this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + _this.__option.name + '_SEARCH', rs);
+                    context.dispatch('A_' + _this.__option.name.toLocaleUpperCase() + '_SEARCH', rs);
                 action_success(data, rs);
             })["catch"](function (e) {
                 action_error(data, e);
@@ -201,17 +201,8 @@ var VuexStore = (function () {
             this.__option.Request.delW({ W: data.Data }).then(function (rs) {
                 if (_this.__option.searchOnChange !== false) {
                     context.state.Where.W = {};
-                    context.dispatch('A_' + _this.__option.name + '_SEARCH', context.state.Where);
+                    context.dispatch('A_' + _this.__option.name.toLocaleUpperCase() + '_SEARCH', context.state.Where);
                 }
-                action_success(data, rs);
-            })["catch"](function (e) {
-                action_error(data, e);
-            });
-        }
-    };
-    VuexStore.prototype.A_IMPORT = function (context, data) {
-        if (this.__option.Request && this.__option.Request.add) {
-            this.__option.Request.add(data.Data).then(function (rs) {
                 action_success(data, rs);
             })["catch"](function (e) {
                 action_error(data, e);
