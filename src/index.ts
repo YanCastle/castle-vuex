@@ -153,12 +153,12 @@ export class ActionParams {
     Error:Function
     Data:Object
 }
-function action_success(data:ActionParams, result:any) {
+export function action_success(data:ActionParams, result:any) {
     if (data && data.Success instanceof Function) {
         data.Success(result)
     }
 }
-function action_error(data:ActionParams, result:any) {
+export function action_error(data:ActionParams, result:any) {
     if (data && data.Error instanceof Function) {
         data.Error(result)
     }
@@ -175,7 +175,7 @@ export class VuexStore {
         if (this.__option.Request && this.__option.Request.search) {
             this.__option.Request.search(context.state.Where).then((rs) =>  {
                 if (this.__option.searchOnChange !== false)
-                    context.commit('M_' + this.__option.name + '_RESULT', rs)
+                    context.commit('M_' + this.__option.name.toLocaleUpperCase() + '_RESULT', rs)
                 action_success(data, rs)
             }).catch((e) =>  {
                 action_error(data, e)
@@ -186,7 +186,7 @@ export class VuexStore {
         if (this.__option.Request && this.__option.Request.add) {
             this.__option.Request.add(data.Data).then((rs) =>  {
                 if (this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + this.__option.name + '_SEARCH', rs)
+                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
                 action_success(data, rs)
             }).catch((e) =>  {
                 action_error(data, e)
@@ -197,7 +197,7 @@ export class VuexStore {
         if (this.__option.Request && this.__option.Request.save) {
             this.__option.Request.save(data.Data[this.__option.Request._pk], data.Data).then((rs) =>  {
                 if (this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + this.__option.name + '_SEARCH', rs)
+                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
                 action_success(data, rs)
             }).catch((e) =>  {
                 action_error(data, e)
@@ -208,7 +208,7 @@ export class VuexStore {
         if (this.__option.Request && this.__option.Request.del) {
             this.__option.Request.del(data.Data[this.__option.Request._pk]).then((rs) =>  {
                 if (this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + this.__option.name + '_SEARCH', rs)
+                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
                 action_success(data, rs)
             }).catch((e) =>  {
                 action_error(data, e)
@@ -220,22 +220,12 @@ export class VuexStore {
             this.__option.Request.delW({W:data.Data}).then((rs)=>{
                 if (this.__option.searchOnChange !== false){
                     context.state.Where.W={}
-                    context.dispatch('A_' + this.__option.name + '_SEARCH', context.state.Where);
+                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', context.state.Where);
                 }
                 action_success(data, rs);
             }).catch((e) => {
                 action_error(data, e);
             });
-        }
-    }
-    A_IMPORT(context:any,data:ActionParams){
-        if (this.__option.Request && this.__option.Request.add) {
-            this.__option.Request.add(data.Data).then((rs) =>  {
-                // if (this.__option.searchOnChange !== false)
-                action_success(data, rs)
-            }).catch((e) =>  {
-                action_error(data, e)
-            })
         }
     }
     G_RESULT(state:any) {
