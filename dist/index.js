@@ -21,8 +21,8 @@ function vuexFactory(store, option) {
         option = {};
     }
     option = Object.assign(option, new VuexOptions);
-    var name = store.name;
     var sclass = new store();
+    var name = sclass.ClassName;
     if (!classes[name])
         classes[name] = sclass;
     else {

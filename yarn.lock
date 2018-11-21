@@ -4,10 +4,5 @@
 
 vuex@^3.0.1:
   version "3.0.1"
-<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"
   integrity sha512-wLoqz0B7DSZtgbWL1ShIBBCjv22GV5U+vcBFox658g6V0s4wZV9P4YjCNyoHSyIBpj1f29JBoNQIqD82cR4O3w==
-=======
-  resolved "http://r.cnpmjs.org/vuex/download/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"
-  integrity sha1-52E1Lr4K9TfUu3Vam53Evj3379I=
->>>>>>> 2dcc62a7b89af3d481439fcc4cf653d95250ebaf

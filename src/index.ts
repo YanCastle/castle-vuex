@@ -40,9 +40,8 @@ function vuexFactory(store, option) {
     }
 
     option = Object.assign(option, new VuexOptions)
-
-    let name:string = store.name; 
     var sclass = new store()
+    let name:string = sclass.ClassName; 
     if ( !classes[name])
         classes[name] = sclass
     else {
