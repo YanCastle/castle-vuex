@@ -9,7 +9,8 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production --config build/config.js src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "vuex": "^3.0.1"
+    "ts-loader": "^5.3.1",
+    "tslint": "^5.12.0",
+    "tslint-loader": "^3.5.4",
+    "typescript": "^3.2.2",
+    "vuex": "^3.0.1",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
   }
 }
