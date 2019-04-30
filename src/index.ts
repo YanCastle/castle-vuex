@@ -1,4 +1,5 @@
 import * as vuex from 'vuex'
+import vue from 'vue'
 /**
  * 请求库
  */
@@ -9,7 +10,7 @@ export interface Request {
     del(pk: any): Promise<Object>
     adds(Data: Object): Promise<Object>
     delW(W: Object): Promise<any>
-    _pk: string
+    pk: string,
 }
 /**
  * Vuex配置
@@ -77,7 +78,7 @@ function vuexFactory(store, option) {
                         break;
                 }
             } else {
-                console.error('Vuex方法名称不符合规范:' + name + '.' + k)
+                // console.error('Vuex方法名称不符合规范:' + name + '.' + k)
             }
         } else {
             if (k.substr(0, 2) !== '__')
@@ -113,11 +114,11 @@ function vuexFactory(store, option) {
     return s;
 }
 /**
- * 
+ * store方法
  * @param vue 
  * @param modules 
  */
-export function store(vue, modules) {
+export function store(modules) {
     vue.use(vuex)
     return new vuex.Store({
         getters: {},
@@ -195,7 +196,7 @@ export class VuexStore {
     }
     A_SAVE(context: any, data: ActionParams) {
         if (this.__option.Request && this.__option.Request.save) {
-            this.__option.Request.save(data.Data[this.__option.Request._pk], data.Data).then((rs) => {
+            this.__option.Request.save(data.Data[this.__option.Request.pk], data.Data).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
                 action_success(data, rs)
@@ -206,7 +207,7 @@ export class VuexStore {
     }
     A_DEL(context: any, data: ActionParams) {
         if (this.__option.Request && this.__option.Request.del) {
-            this.__option.Request.del(data.Data[this.__option.Request._pk]).then((rs) => {
+            this.__option.Request.del(data.Data[this.__option.Request.pk]).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
                 action_success(data, rs)

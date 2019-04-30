@@ -6,7 +6,7 @@ export interface Request {
     del(pk: any): Promise<Object>;
     adds(Data: Object): Promise<Object>;
     delW(W: Object): Promise<any>;
-    _pk: string;
+    pk: string;
 }
 export declare class VuexOptions {
     Request?: Request;
@@ -14,7 +14,7 @@ export declare class VuexOptions {
     searchOnChange?: boolean;
 }
 export default function Vuex(options: VuexOptions): any;
-export declare function store(vue: any, modules: any): vuex.Store<{}>;
+export declare function store(modules: any): vuex.Store<{}>;
 export declare class SearchWhere {
     Keyword: string;
     P: number;

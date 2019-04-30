@@ -1,28 +1,28 @@
 "use strict";
-exports.__esModule = true;
-var vuex = require("vuex");
-var VuexOptions = (function () {
-    function VuexOptions() {
+Object.defineProperty(exports, "__esModule", { value: true });
+const vuex = require("vuex");
+const vue_1 = require("vue");
+class VuexOptions {
+    constructor() {
         this.name = '';
         this.searchOnChange = true;
     }
-    return VuexOptions;
-}());
+}
 exports.VuexOptions = VuexOptions;
 function Vuex(options) {
     return function (store) {
         return vuexFactory(store, options);
     };
 }
-exports["default"] = Vuex;
-var classes = {};
+exports.default = Vuex;
+const classes = {};
 function vuexFactory(store, option) {
     if (option === void 0) {
         option = {};
     }
     option = Object.assign(option, new VuexOptions);
     var sclass = new store();
-    var name = sclass.ClassName;
+    let name = sclass.ClassName;
     if (!classes[name])
         classes[name] = sclass;
     else {
@@ -40,10 +40,10 @@ function vuexFactory(store, option) {
     var superProto = Object.getPrototypeOf(store.prototype);
     if (superProto instanceof VuexStore) {
     }
-    Object.keys(sclass).forEach(function (k) {
+    Object.keys(sclass).forEach((k) => {
         if (typeof sclass[k] == 'function') {
             if (/^([AGM])_([A-Z_\d]{1,})$/.test(k)) {
-                var ks = k.replace(/^([AGM])_/, '$1_' + name.toUpperCase() + '_');
+                let ks = k.replace(/^([AGM])_/, '$1_' + name.toUpperCase() + '_');
                 switch (k.substr(0, 2)) {
                     case 'G_':
                         s.getters[ks] = sclass[k];
@@ -57,7 +57,6 @@ function vuexFactory(store, option) {
                 }
             }
             else {
-                console.error('Vuex方法名称不符合规范:' + name + '.' + k);
             }
         }
         else {
@@ -65,10 +64,10 @@ function vuexFactory(store, option) {
                 s.state[k] = sclass[k];
         }
     });
-    var methods = Object.getOwnPropertyNames(Object.getPrototypeOf(store.prototype)).concat(Object.getOwnPropertyNames(store.prototype));
-    methods.forEach(function (k) {
+    let methods = [...Object.getOwnPropertyNames(Object.getPrototypeOf(store.prototype)), ...Object.getOwnPropertyNames(store.prototype)];
+    methods.forEach(k => {
         if (/^([AGM])_([A-Z_\d]{1,})$/.test(k)) {
-            var ks = k.replace(/^([AGM])_/, '$1_' + name.toUpperCase() + '_');
+            let ks = k.replace(/^([AGM])_/, '$1_' + name.toUpperCase() + '_');
             switch (k.substr(0, 2)) {
                 case 'G_':
                     s.getters[ks] = function (state) {
@@ -94,8 +93,8 @@ function vuexFactory(store, option) {
     });
     return s;
 }
-function store(vue, modules) {
-    vue.use(vuex);
+function store(modules) {
+    vue_1.default.use(vuex);
     return new vuex.Store({
         getters: {},
         actions: {},
@@ -103,33 +102,28 @@ function store(vue, modules) {
     });
 }
 exports.store = store;
-var SearchWhere = (function () {
-    function SearchWhere() {
+class SearchWhere {
+    constructor() {
         this.Keyword = '';
         this.P = 1;
         this.N = 10;
         this.Sort = '';
         this.W = {};
     }
-    return SearchWhere;
-}());
+}
 exports.SearchWhere = SearchWhere;
-var SearchResult = (function () {
-    function SearchResult() {
+class SearchResult {
+    constructor() {
         this.L = [];
         this.P = 0;
         this.N = 0;
         this.T = 0;
         this.R = {};
     }
-    return SearchResult;
-}());
+}
 exports.SearchResult = SearchResult;
-var ActionParams = (function () {
-    function ActionParams() {
-    }
-    return ActionParams;
-}());
+class ActionParams {
+}
 exports.ActionParams = ActionParams;
 function action_success(data, result) {
     if (data && data.Success instanceof Function) {
@@ -143,102 +137,96 @@ function action_error(data, result) {
     }
 }
 exports.action_error = action_error;
-var VuexStore = (function () {
-    function VuexStore() {
+class VuexStore {
+    constructor() {
         this.Result = new SearchResult();
         this.Where = new SearchWhere();
         this.ClassName = "";
     }
-    VuexStore.prototype.A_SEARCH = function (context, data) {
-        var _this = this;
+    A_SEARCH(context, data) {
         if (this.__option.Request && this.__option.Request.search) {
-            this.__option.Request.search(context.state.Where).then(function (rs) {
-                if (_this.__option.searchOnChange !== false)
-                    context.commit('M_' + _this.__option.name.toLocaleUpperCase() + '_RESULT', rs);
+            this.__option.Request.search(context.state.Where).then((rs) => {
+                if (this.__option.searchOnChange !== false)
+                    context.commit('M_' + this.__option.name.toLocaleUpperCase() + '_RESULT', rs);
                 action_success(data, rs);
-            })["catch"](function (e) {
+            }).catch((e) => {
                 action_error(data, e);
             });
         }
-    };
-    VuexStore.prototype.A_ADD = function (context, data) {
-        var _this = this;
+    }
+    A_ADD(context, data) {
         if (this.__option.Request && this.__option.Request.add) {
-            this.__option.Request.add(data.Data).then(function (rs) {
-                if (_this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + _this.__option.name.toLocaleUpperCase() + '_SEARCH', rs);
+            this.__option.Request.add(data.Data).then((rs) => {
+                if (this.__option.searchOnChange !== false)
+                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs);
                 action_success(data, rs);
-            })["catch"](function (e) {
+            }).catch((e) => {
                 action_error(data, e);
             });
         }
-    };
-    VuexStore.prototype.A_SAVE = function (context, data) {
-        var _this = this;
+    }
+    A_SAVE(context, data) {
         if (this.__option.Request && this.__option.Request.save) {
-            this.__option.Request.save(data.Data[this.__option.Request._pk], data.Data).then(function (rs) {
-                if (_this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + _this.__option.name.toLocaleUpperCase() + '_SEARCH', rs);
+            this.__option.Request.save(data.Data[this.__option.Request.pk], data.Data).then((rs) => {
+                if (this.__option.searchOnChange !== false)
+                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs);
                 action_success(data, rs);
-            })["catch"](function (e) {
+            }).catch((e) => {
                 action_error(data, e);
             });
         }
-    };
-    VuexStore.prototype.A_DEL = function (context, data) {
-        var _this = this;
+    }
+    A_DEL(context, data) {
         if (this.__option.Request && this.__option.Request.del) {
-            this.__option.Request.del(data.Data[this.__option.Request._pk]).then(function (rs) {
-                if (_this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + _this.__option.name.toLocaleUpperCase() + '_SEARCH', rs);
+            this.__option.Request.del(data.Data[this.__option.Request.pk]).then((rs) => {
+                if (this.__option.searchOnChange !== false)
+                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs);
                 action_success(data, rs);
-            })["catch"](function (e) {
+            }).catch((e) => {
                 action_error(data, e);
             });
         }
-    };
-    VuexStore.prototype.A_DEL_W = function (context, data) {
-        var _this = this;
+    }
+    A_DEL_W(context, data) {
         if (this.__option.Request && this.__option.Request.delW) {
-            this.__option.Request.delW({ W: data.Data }).then(function (rs) {
-                if (_this.__option.searchOnChange !== false) {
+            this.__option.Request.delW({ W: data.Data }).then((rs) => {
+                if (this.__option.searchOnChange !== false) {
                     context.state.Where.W = {};
-                    context.dispatch('A_' + _this.__option.name.toLocaleUpperCase() + '_SEARCH', context.state.Where);
+                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', context.state.Where);
                 }
                 action_success(data, rs);
-            })["catch"](function (e) {
+            }).catch((e) => {
                 action_error(data, e);
             });
         }
-    };
-    VuexStore.prototype.G_RESULT = function (state) {
+    }
+    G_RESULT(state) {
         return state.Result;
-    };
-    VuexStore.prototype.G_WHERE = function (state) {
+    }
+    G_WHERE(state) {
         return state.Where;
-    };
-    VuexStore.prototype.M_WHERE = function (state, payload) {
+    }
+    M_WHERE(state, payload) {
         state.Where = payload;
-    };
-    VuexStore.prototype.M_WHERE_W = function (state, payload) {
+    }
+    M_WHERE_W(state, payload) {
         state.Where.W = payload;
-    };
-    VuexStore.prototype.M_WHERE_P = function (state, p) {
+    }
+    M_WHERE_P(state, p) {
         state.Where.P = p;
-    };
-    VuexStore.prototype.M_WHERE_N = function (state, n) {
+    }
+    M_WHERE_N(state, n) {
         state.Where.N = n;
-    };
-    VuexStore.prototype.M_WHERE_KEYWORD = function (state, keyword) {
+    }
+    M_WHERE_KEYWORD(state, keyword) {
         state.Where.Keyword = keyword;
-    };
-    VuexStore.prototype.M_WHERE_SORT = function (state, sort) {
+    }
+    M_WHERE_SORT(state, sort) {
         state.Where.Sort = sort;
-    };
-    VuexStore.prototype.M_RESULT = function (state, rs) {
+    }
+    M_RESULT(state, rs) {
         state.Result = rs;
-    };
-    return VuexStore;
-}());
+    }
+}
 exports.VuexStore = VuexStore;
 //# sourceMappingURL=index.js.map
