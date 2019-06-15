@@ -1,4 +1,5 @@
 import * as vuex from 'vuex';
+export declare var exclude: string[];
 export interface Request {
     search(Where?: SearchWhere): Promise<SearchResult>;
     add(Data: Object): Promise<Object>;

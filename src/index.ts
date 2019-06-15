@@ -1,6 +1,23 @@
 import * as vuex from 'vuex'
 import * as vue from 'vue'
 /**
+ * 排除这些属性和方法
+ */
+export var exclude = [
+    '__defineGetter__',
+    '__defineSetter__',
+    'hasOwnProperty',
+    '__lookupGetter__',
+    '__lookupSetter__',
+    'isPrototypeOf',
+    'propertyIsEnumerable',
+    'toString',
+    'valueOf',
+    '__proto__',
+    'toLocaleString',
+    'constructor'
+]
+/**
  * 请求库
  */
 export interface Request {
@@ -107,7 +124,7 @@ function vuexFactory(store, option) {
                     break;
             }
         } else {
-            if (['constructor'].indexOf(k) === -1)
+            if (exclude.indexOf(k) === -1)
                 console.error('Vuex方法名称不符合规范:' + name + '.' + k)
         }
     })

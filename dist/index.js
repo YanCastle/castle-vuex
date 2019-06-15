@@ -2,6 +2,20 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const vuex = require("vuex");
 const vue = require("vue");
+exports.exclude = [
+    '__defineGetter__',
+    '__defineSetter__',
+    'hasOwnProperty',
+    '__lookupGetter__',
+    '__lookupSetter__',
+    'isPrototypeOf',
+    'propertyIsEnumerable',
+    'toString',
+    'valueOf',
+    '__proto__',
+    'toLocaleString',
+    'constructor'
+];
 class VuexOptions {
     constructor() {
         this.name = '';
@@ -87,7 +101,7 @@ function vuexFactory(store, option) {
             }
         }
         else {
-            if (['constructor'].indexOf(k) === -1)
+            if (exports.exclude.indexOf(k) === -1)
                 console.error('Vuex方法名称不符合规范:' + name + '.' + k);
         }
     });
