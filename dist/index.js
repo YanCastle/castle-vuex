@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const vuex = require("vuex");
-const vue_1 = require("vue");
+const vue = require("vue");
 class VuexOptions {
     constructor() {
         this.name = '';
@@ -29,8 +29,8 @@ function vuexFactory(store, option) {
         console.error('VuexStore:重复的VuexStore定义' + name);
     }
     sclass.__option = option;
-    sclass.__option.name = sclass.ClassName;
-    name = sclass.ClassName;
+    sclass.__option.name = sclass.ClassName || sclass.constructor.name;
+    name = sclass.ClassName || sclass.constructor.name;
     var s = {
         state: {},
         getters: {},
@@ -94,7 +94,7 @@ function vuexFactory(store, option) {
     return s;
 }
 function store(modules) {
-    vue_1.default.use(vuex);
+    vue.use(vuex);
     return new vuex.Store({
         getters: {},
         actions: {},

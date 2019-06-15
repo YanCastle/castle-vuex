@@ -14,7 +14,7 @@ export declare class VuexOptions {
     searchOnChange?: boolean;
 }
 export default function Vuex(options: VuexOptions): any;
-export declare function store(modules: any): vuex.Store<{}>;
+export declare function store(modules: any): vuex.Store<unknown>;
 export declare class SearchWhere {
     Keyword: string;
     P: number;

@@ -1,5 +1,5 @@
 import * as vuex from 'vuex'
-import vue from 'vue'
+import * as vue from 'vue'
 /**
  * 请求库
  */
@@ -49,8 +49,8 @@ function vuexFactory(store, option) {
         console.error('VuexStore:重复的VuexStore定义' + name)
     }
     sclass.__option = option
-    sclass.__option.name = sclass.ClassName
-    name = sclass.ClassName
+    sclass.__option.name = sclass.ClassName || sclass.constructor.name
+    name = sclass.ClassName || sclass.constructor.name
     var s = {
         state: {},
         getters: {},
