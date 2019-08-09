@@ -15,7 +15,8 @@ export declare class VuexOptions {
     searchOnChange?: boolean;
 }
 export default function Vuex(options: VuexOptions): any;
-export declare function store(modules: any): vuex.Store<unknown>;
+export declare function await_action(name: string, method: string, data: any): Promise<unknown>;
+export declare function store(modules: any): vuex.Store<any>;
 export declare class SearchWhere {
     Keyword: string;
     P: number;

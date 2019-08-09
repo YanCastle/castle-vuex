@@ -1,6 +1,6 @@
 {
   "name": "@ctsy/vuex",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "files": [
     "dist/index.js",
@@ -10,7 +10,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode production --config build/config.js src/index.ts"
+    "build": "webpack --mode production --config build/config.js src/index.ts",
+    "prepublish": "rm -rf dist && tsc"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,8 @@
   "dependencies": {
     "vue": "^2.6.10",
     "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.1"
   }
 }

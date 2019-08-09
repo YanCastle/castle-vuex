@@ -1,7 +1,16 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const vuex = require("vuex");
-const vue = require("vue");
+const vue = require('vue');
+var Store;
 exports.exclude = [
     '__defineGetter__',
     '__defineSetter__',
@@ -90,7 +99,20 @@ function vuexFactory(store, option) {
                     break;
                 case 'A_':
                     s.actions[ks] = function (state, data) {
-                        return sclass[k].apply(sclass, [state, data]);
+                        return __awaiter(this, void 0, void 0, function* () {
+                            try {
+                                let rs = yield sclass[k].apply(sclass, [state, data]);
+                                if (data.s instanceof Function) {
+                                    data.s(rs);
+                                }
+                                return rs;
+                            }
+                            catch (error) {
+                                if (data.e instanceof Function) {
+                                    data.e(error);
+                                }
+                            }
+                        });
                     };
                     break;
                 case 'M_':
@@ -107,13 +129,22 @@ function vuexFactory(store, option) {
     });
     return s;
 }
+function await_action(name, method, data) {
+    return new Promise((s, j) => {
+        data.s = s;
+        data.e = j;
+        Store.dispatch(['A', name, method].join('_'), data);
+    });
+}
+exports.await_action = await_action;
 function store(modules) {
     vue.use(vuex);
-    return new vuex.Store({
+    Store = new vuex.Store({
         getters: {},
         actions: {},
         modules: modules
     });
+    return Store;
 }
 exports.store = store;
 class SearchWhere {

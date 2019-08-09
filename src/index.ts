@@ -1,5 +1,5 @@
 import * as vuex from 'vuex'
-import * as vue from 'vue'
+const vue: any = require('vue')
 
 var Store: vuex.Store<any>;
 /**
