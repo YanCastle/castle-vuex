@@ -1,5 +1,7 @@
 import * as vuex from 'vuex'
 import * as vue from 'vue'
+
+var Store: vuex.Store<any>;
 /**
  * 排除这些属性和方法
  */
@@ -113,8 +115,18 @@ function vuexFactory(store, option) {
                     }
                     break;
                 case 'A_':
-                    s.actions[ks] = function (state, data) {
-                        return sclass[k].apply(sclass, [state, data])
+                    s.actions[ks] = async function (state, data) {
+                        try {
+                            let rs = await sclass[k].apply(sclass, [state, data])
+                            if (data.s instanceof Function) {
+                                data.s(rs);
+                            }
+                            return rs;
+                        } catch (error) {
+                            if (data.e instanceof Function) {
+                                data.e(error);
+                            }
+                        }
                     }
                     break;
                 case 'M_':
@@ -131,17 +143,30 @@ function vuexFactory(store, option) {
     return s;
 }
 /**
+ * 同步等待执行action方法
+ * @param name 
+ * @param method 
+ * @param data 
+ */
+export function await_action(name: string, method: string, data: any) {
+    return new Promise((s, j) => {
+        data.s = s; data.e = j;
+        Store.dispatch(['A', name, method].join('_'), data);
+    })
+}
+/**
  * store方法
  * @param vue 
  * @param modules 
  */
-export function store(modules) {
+export function store(modules): vuex.Store<any> {
     vue.use(vuex)
-    return new vuex.Store({
+    Store = new vuex.Store({
         getters: {},
         actions: {},
         modules: modules
     })
+    return Store;
 }
 /**
  * 查询条件
