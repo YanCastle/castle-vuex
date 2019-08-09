@@ -130,10 +130,15 @@ function vuexFactory(store, option) {
     return s;
 }
 function await_action(name, method, data) {
+    let a = ['A', name.toUpperCase(), method.toUpperCase()].join('_');
+    if (!Store._actions[a]) {
+        throw new Error('Account Not Found:' + a);
+        return;
+    }
     return new Promise((s, j) => {
         data.s = s;
         data.e = j;
-        Store.dispatch(['A', name, method].join('_'), data);
+        Store.dispatch(a, data);
     });
 }
 exports.await_action = await_action;
