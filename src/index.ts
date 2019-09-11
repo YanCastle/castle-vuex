@@ -233,59 +233,53 @@ export class VuexStore {
     }
     A_SEARCH(context: any, data?: ActionParams) {
         if (this.__option.Request && this.__option.Request.search) {
-            this.__option.Request.search(context.state.Where).then((rs) => {
+            return this.__option.Request.search(context.state.Where).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.commit('M_' + this.__option.name.toLocaleUpperCase() + '_RESULT', rs)
-                action_success(data, rs)
-            }).catch((e) => {
-                action_error(data, e)
+                // action_success(data, rs)
+                return rs;
             })
         }
     }
     A_ADD(context: any, data: ActionParams) {
         if (this.__option.Request && this.__option.Request.add) {
-            this.__option.Request.add(data.Data).then((rs) => {
+            return this.__option.Request.add(data.Data).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
-                action_success(data, rs)
-            }).catch((e) => {
-                action_error(data, e)
+                // action_success(data, rs)
+                return rs;
             })
         }
     }
     A_SAVE(context: any, data: ActionParams) {
         if (this.__option.Request && this.__option.Request.save) {
-            this.__option.Request.save(data.Data[this.__option.Request.pk], data.Data).then((rs) => {
+            return this.__option.Request.save(data.Data[this.__option.Request.pk], data.Data).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
-                action_success(data, rs)
-            }).catch((e) => {
-                action_error(data, e)
+                // action_success(data, rs)
+                return rs;
             })
         }
     }
     A_DEL(context: any, data: ActionParams) {
         if (this.__option.Request && this.__option.Request.del) {
-            this.__option.Request.del(data.Data[this.__option.Request.pk]).then((rs) => {
+            return this.__option.Request.del(data.Data[this.__option.Request.pk]).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
-                action_success(data, rs)
-            }).catch((e) => {
-                action_error(data, e)
+                // action_success(data, rs)
+                return rs;
             })
         }
     }
     A_DEL_W(context: any, data: ActionParams) {
         if (this.__option.Request && this.__option.Request.delW) {
-            this.__option.Request.delW({ W: data.Data }).then((rs) => {
+            return this.__option.Request.delW({ W: data.Data }).then((rs) => {
                 if (this.__option.searchOnChange !== false) {
                     context.state.Where.W = {}
                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', context.state.Where);
                 }
-                action_success(data, rs);
-            }).catch((e) => {
-                action_error(data, e);
-            });
+                return rs;
+            })
         }
     }
     G_RESULT(state: any) {

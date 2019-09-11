@@ -48,11 +48,11 @@ export declare class VuexStore {
     ClassName: string;
     __option: VuexOptions;
     A_ALL(ctx: any): void;
-    A_SEARCH(context: any, data?: ActionParams): void;
-    A_ADD(context: any, data: ActionParams): void;
-    A_SAVE(context: any, data: ActionParams): void;
-    A_DEL(context: any, data: ActionParams): void;
-    A_DEL_W(context: any, data: ActionParams): void;
+    A_SEARCH(context: any, data?: ActionParams): Promise<SearchResult>;
+    A_ADD(context: any, data: ActionParams): Promise<Object>;
+    A_SAVE(context: any, data: ActionParams): Promise<Object>;
+    A_DEL(context: any, data: ActionParams): Promise<Object>;
+    A_DEL_W(context: any, data: ActionParams): Promise<any>;
     G_RESULT(state: any): any;
     G_WHERE(state: any): any;
     G_ALL(state: any, store: any): any;
