@@ -173,9 +173,10 @@ function await_action(name, method, data) {
         return;
     }
     return new Promise(function (s, j) {
-        data.s = s;
-        data.e = j;
-        Store.dispatch(a, data);
+        Store.dispatch(a, {
+            Data: data,
+            s: s, j: j
+        });
     });
 }
 exports.await_action = await_action;
@@ -315,7 +316,7 @@ var VuexStore = (function () {
     };
     VuexStore.prototype.G_ALL = function (state, store) {
         if (state.AllResult.T <= 0) {
-            Store.dispatch(['A', store.ClassName.toUpperCase(), 'ALL'].join('_'), {});
+            Store.dispatch(['A', state.ClassName.toUpperCase(), 'ALL'].join('_'), {});
         }
         return state.AllResult;
     };

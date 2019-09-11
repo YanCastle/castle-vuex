@@ -155,8 +155,11 @@ export function await_action(name: string, method: string, data: any) {
         return;
     }
     return new Promise((s, j) => {
-        data.s = s; data.e = j;
-        Store.dispatch(a, data);
+        // data.s = s; data.e = j;
+        Store.dispatch(a, {
+            Data: data,
+            s, j
+        });
     })
 }
 /**
@@ -293,7 +296,7 @@ export class VuexStore {
     }
     G_ALL(state: any, store: any) {
         if (state.AllResult.T <= 0) {
-            Store.dispatch(['A', store.ClassName.toUpperCase(), 'ALL'].join('_'), {})
+            Store.dispatch(['A', state.ClassName.toUpperCase(), 'ALL'].join('_'), {})
         }
         return state.AllResult;
     }
