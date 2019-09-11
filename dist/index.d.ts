@@ -43,8 +43,11 @@ export declare function action_error(data: ActionParams, result: any): void;
 export declare class VuexStore {
     Result: SearchResult;
     Where: SearchWhere;
+    AllResult: SearchResult;
+    AllowAll: boolean;
     ClassName: string;
     __option: VuexOptions;
+    A_ALL(ctx: any): void;
     A_SEARCH(context: any, data?: ActionParams): void;
     A_ADD(context: any, data: ActionParams): void;
     A_SAVE(context: any, data: ActionParams): void;
@@ -52,6 +55,8 @@ export declare class VuexStore {
     A_DEL_W(context: any, data: ActionParams): void;
     G_RESULT(state: any): any;
     G_WHERE(state: any): any;
+    G_ALL(state: any, store: any): any;
+    M_ALL(state: VuexStore, payload: SearchResult): void;
     M_WHERE(state: VuexStore, payload: SearchWhere): void;
     M_WHERE_W(state: VuexStore, payload: any): void;
     M_WHERE_P(state: VuexStore, p: number): void;

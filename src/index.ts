@@ -111,13 +111,13 @@ function vuexFactory(store, option) {
             switch (k.substr(0, 2)) {
                 case 'G_':
                     s.getters[ks] = function (state) {
-                        return sclass[k].apply(sclass, [state])
+                        return sclass[k].apply(sclass, [state, s])
                     }
                     break;
                 case 'A_':
                     s.actions[ks] = async function (state, data) {
                         try {
-                            let rs = await sclass[k].apply(sclass, [state, data])
+                            let rs = await sclass[k].apply(sclass, [state, data, s])
                             if (data.s instanceof Function) {
                                 data.s(rs);
                             }
@@ -131,7 +131,7 @@ function vuexFactory(store, option) {
                     break;
                 case 'M_':
                     s.mutations[ks] = function (state, payload) {
-                        return sclass[k].apply(sclass, [state, payload])
+                        return sclass[k].apply(sclass, [state, payload, s])
                     }
                     break;
             }
@@ -217,8 +217,17 @@ export function action_error(data: ActionParams, result: any) {
 export class VuexStore {
     Result: SearchResult = new SearchResult()
     Where: SearchWhere = new SearchWhere()
+    AllResult: SearchResult = new SearchResult();
+    AllowAll: boolean = false;
     ClassName: string = ""
     __option: VuexOptions;
+    A_ALL(ctx: any) {
+        if (this.AllowAll) {
+            this.__option.Request.search({ N: 999999, P: 1, Keyword: '', W: {}, Sort: '' }).then((rs) => {
+                ctx.commit('M_' + this.__option.name.toLocaleUpperCase() + '_ALL', rs)
+            })
+        }
+    }
     A_SEARCH(context: any, data?: ActionParams) {
         if (this.__option.Request && this.__option.Request.search) {
             this.__option.Request.search(context.state.Where).then((rs) => {
@@ -281,6 +290,15 @@ export class VuexStore {
     }
     G_WHERE(state: any) {
         return state.Where;
+    }
+    G_ALL(state: any, store: any) {
+        if (state.AllResult.T <= 0) {
+            Store.dispatch(['A', store.ClassName.toUpperCase(), 'ALL'].join('_'), {})
+        }
+        return state.AllResult;
+    }
+    M_ALL(state: VuexStore, payload: SearchResult) {
+        state.AllResult = payload;
     }
     M_WHERE(state: VuexStore, payload: SearchWhere) {
         state.Where = payload;

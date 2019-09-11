@@ -122,7 +122,7 @@ function vuexFactory(store, option) {
             switch (k.substr(0, 2)) {
                 case 'G_':
                     s.getters[ks] = function (state) {
-                        return sclass[k].apply(sclass, [state]);
+                        return sclass[k].apply(sclass, [state, s]);
                     };
                     break;
                 case 'A_':
@@ -133,7 +133,7 @@ function vuexFactory(store, option) {
                                 switch (_a.label) {
                                     case 0:
                                         _a.trys.push([0, 2, , 3]);
-                                        return [4, sclass[k].apply(sclass, [state, data])];
+                                        return [4, sclass[k].apply(sclass, [state, data, s])];
                                     case 1:
                                         rs = _a.sent();
                                         if (data.s instanceof Function) {
@@ -154,7 +154,7 @@ function vuexFactory(store, option) {
                     break;
                 case 'M_':
                     s.mutations[ks] = function (state, payload) {
-                        return sclass[k].apply(sclass, [state, payload]);
+                        return sclass[k].apply(sclass, [state, payload, s]);
                     };
                     break;
             }
@@ -233,8 +233,18 @@ var VuexStore = (function () {
     function VuexStore() {
         this.Result = new SearchResult();
         this.Where = new SearchWhere();
+        this.AllResult = new SearchResult();
+        this.AllowAll = false;
         this.ClassName = "";
     }
+    VuexStore.prototype.A_ALL = function (ctx) {
+        var _this = this;
+        if (this.AllowAll) {
+            this.__option.Request.search({ N: 999999, P: 1, Keyword: '', W: {}, Sort: '' }).then(function (rs) {
+                ctx.commit('M_' + _this.__option.name.toLocaleUpperCase() + '_ALL', rs);
+            });
+        }
+    };
     VuexStore.prototype.A_SEARCH = function (context, data) {
         var _this = this;
         if (this.__option.Request && this.__option.Request.search) {
@@ -302,6 +312,15 @@ var VuexStore = (function () {
     };
     VuexStore.prototype.G_WHERE = function (state) {
         return state.Where;
+    };
+    VuexStore.prototype.G_ALL = function (state, store) {
+        if (state.AllResult.T <= 0) {
+            Store.dispatch(['A', store.ClassName.toUpperCase(), 'ALL'].join('_'), {});
+        }
+        return state.AllResult;
+    };
+    VuexStore.prototype.M_ALL = function (state, payload) {
+        state.AllResult = payload;
     };
     VuexStore.prototype.M_WHERE = function (state, payload) {
         state.Where = payload;
