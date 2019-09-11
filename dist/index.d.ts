@@ -34,8 +34,8 @@ export declare class SearchResult {
     R?: any;
 }
 export declare class ActionParams {
-    Success: Function;
-    Error: Function;
+    s: Function;
+    e: Function;
     Data: Object;
 }
 export declare function action_success(data: ActionParams, result: any): void;

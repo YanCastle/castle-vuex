@@ -154,11 +154,11 @@ export function await_action(name: string, method: string, data: any) {
         throw new Error('Account Not Found:' + a)
         return;
     }
-    return new Promise((s, j) => {
+    return new Promise((s, e) => {
         // data.s = s; data.e = j;
         Store.dispatch(a, {
             Data: data,
-            s, j
+            s, e
         });
     })
 }
@@ -200,18 +200,18 @@ export class SearchResult {
  * 
  */
 export class ActionParams {
-    Success: Function
-    Error: Function
+    s: Function
+    e: Function
     Data: Object
 }
 export function action_success(data: ActionParams, result: any) {
-    if (data && data.Success instanceof Function) {
-        data.Success(result)
+    if (data && data.s instanceof Function) {
+        data.s(result)
     }
 }
 export function action_error(data: ActionParams, result: any) {
-    if (data && data.Error instanceof Function) {
-        data.Error(result)
+    if (data && data.e instanceof Function) {
+        data.e(result)
     }
 }
 /**

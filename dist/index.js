@@ -172,10 +172,10 @@ function await_action(name, method, data) {
         throw new Error('Account Not Found:' + a);
         return;
     }
-    return new Promise(function (s, j) {
+    return new Promise(function (s, e) {
         Store.dispatch(a, {
             Data: data,
-            s: s, j: j
+            s: s, e: e
         });
     });
 }
@@ -219,14 +219,14 @@ var ActionParams = (function () {
 }());
 exports.ActionParams = ActionParams;
 function action_success(data, result) {
-    if (data && data.Success instanceof Function) {
-        data.Success(result);
+    if (data && data.s instanceof Function) {
+        data.s(result);
     }
 }
 exports.action_success = action_success;
 function action_error(data, result) {
-    if (data && data.Error instanceof Function) {
-        data.Error(result);
+    if (data && data.e instanceof Function) {
+        data.e(result);
     }
 }
 exports.action_error = action_error;
