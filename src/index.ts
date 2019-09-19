@@ -1,4 +1,5 @@
 import * as vuex from 'vuex'
+import { delay_cb } from 'castle-function';
 const vue: any = require('vue')
 
 var Store: vuex.Store<any> | any;
@@ -164,6 +165,37 @@ export function await_action(name: string, method: string, data: any) {
         });
     })
 }
+export const MapReaderCache: { [index: string]: any[] } = {
+
+}
+/**
+ * 关联读取
+ * @param name 
+ * @param pkey 
+ */
+export function map_read(name: string, pkey: number | string) {
+    if (!Store.state[name]) {
+        throw new Error('Store State Not Found:' + name);
+    }
+    if (!(Store.state[name].__option && Store.state.__option[name].Request && Store.state[name].__option.Request.pk)) {
+        throw new Error('Store Options pk Not Defined:' + name)
+    }
+    if (Store.state[name].Maps[pkey]) {
+        return Store.state[name].Maps[pkey];
+    } else {
+        if (!MapReaderCache[name]) {
+            MapReaderCache[name] = [];
+        }
+        MapReaderCache[name].push(pkey);
+        delay_cb('map_' + name, (20), () => {
+            Store.state[name].__option.Request.search({ [Store.state[name].__option.Request.pk]: { in: MapReaderCache[name] } }, { P: 1, N: MapReaderCache[name].length }).then((rs) => {
+                Store.commit(['M', name, 'MAPS'].join('_').toUpperCase(), rs);
+            })
+            MapReaderCache[name] = [];
+        })
+        return '加载中'
+    }
+}
 /**
  * store方法
  * @param vue 
@@ -224,7 +256,8 @@ export class VuexStore {
     Where: SearchWhere = new SearchWhere()
     AllResult: SearchResult = new SearchResult();
     AllowAll: boolean = false;
-    ClassName: string = ""
+    ClassName: string = "";
+    Maps: { [index: string]: any } = {};
     __option: VuexOptions;
     A_ALL(ctx: any) {
         if (this.AllowAll) {
@@ -301,6 +334,13 @@ export class VuexStore {
     }
     M_WHERE(state: VuexStore, payload: SearchWhere) {
         state.Where = payload;
+    }
+    M_MAPS(state: VuexStore, payload: SearchResult) {
+        if (payload.L && payload.L.length > 0) {
+            for (let x of payload.L) {
+                state.Maps[x[this.__option.Request.pk]] = x;
+            }
+        }
     }
     M_WHERE_W(state: VuexStore, payload: any) {
         state.Where.W = payload;

@@ -16,6 +16,10 @@ export declare class VuexOptions {
 }
 export default function Vuex(options: VuexOptions): any;
 export declare function await_action(name: string, method: string, data: any): Promise<unknown>;
+export declare const MapReaderCache: {
+    [index: string]: any[];
+};
+export declare function map_read(name: string, pkey: number | string): any;
 export declare function store(modules: any): vuex.Store<any>;
 export declare class SearchWhere {
     Keyword: string;
@@ -46,6 +50,9 @@ export declare class VuexStore {
     AllResult: SearchResult;
     AllowAll: boolean;
     ClassName: string;
+    Maps: {
+        [index: string]: any;
+    };
     __option: VuexOptions;
     A_ALL(ctx: any): void;
     A_SEARCH(context: any, data?: ActionParams): Promise<SearchResult>;
@@ -58,6 +65,7 @@ export declare class VuexStore {
     G_ALL(state: any, store: any): any;
     M_ALL(state: VuexStore, payload: SearchResult): void;
     M_WHERE(state: VuexStore, payload: SearchWhere): void;
+    M_MAPS(state: VuexStore, payload: SearchResult): void;
     M_WHERE_W(state: VuexStore, payload: any): void;
     M_WHERE_P(state: VuexStore, p: number): void;
     M_WHERE_N(state: VuexStore, n: number): void;

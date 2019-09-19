@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var vuex = require("vuex");
+var castle_function_1 = require("castle-function");
 var vue = require('vue');
 var Store;
 exports.exclude = [
@@ -182,6 +183,33 @@ function await_action(name, method, data) {
     });
 }
 exports.await_action = await_action;
+exports.MapReaderCache = {};
+function map_read(name, pkey) {
+    if (!Store.state[name]) {
+        throw new Error('Store State Not Found:' + name);
+    }
+    if (!(Store.state[name].__option && Store.state.__option[name].Request && Store.state[name].__option.Request.pk)) {
+        throw new Error('Store Options pk Not Defined:' + name);
+    }
+    if (Store.state[name].Maps[pkey]) {
+        return Store.state[name].Maps[pkey];
+    }
+    else {
+        if (!exports.MapReaderCache[name]) {
+            exports.MapReaderCache[name] = [];
+        }
+        exports.MapReaderCache[name].push(pkey);
+        castle_function_1.delay_cb('map_' + name, (20), function () {
+            var _a;
+            Store.state[name].__option.Request.search((_a = {}, _a[Store.state[name].__option.Request.pk] = { in: exports.MapReaderCache[name] }, _a), { P: 1, N: exports.MapReaderCache[name].length }).then(function (rs) {
+                Store.commit(['M', name, 'MAPS'].join('_').toUpperCase(), rs);
+            });
+            exports.MapReaderCache[name] = [];
+        });
+        return '加载中';
+    }
+}
+exports.map_read = map_read;
 function store(modules) {
     vue.use(vuex);
     Store = new vuex.Store({
@@ -239,6 +267,7 @@ var VuexStore = (function () {
         this.AllResult = new SearchResult();
         this.AllowAll = false;
         this.ClassName = "";
+        this.Maps = {};
     }
     VuexStore.prototype.A_ALL = function (ctx) {
         var _this = this;
@@ -317,6 +346,14 @@ var VuexStore = (function () {
     };
     VuexStore.prototype.M_WHERE = function (state, payload) {
         state.Where = payload;
+    };
+    VuexStore.prototype.M_MAPS = function (state, payload) {
+        if (payload.L && payload.L.length > 0) {
+            for (var _i = 0, _a = payload.L; _i < _a.length; _i++) {
+                var x = _a[_i];
+                state.Maps[x[this.__option.Request.pk]] = x;
+            }
+        }
     };
     VuexStore.prototype.M_WHERE_W = function (state, payload) {
         state.Where.W = payload;
