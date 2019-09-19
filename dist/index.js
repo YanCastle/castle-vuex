@@ -83,7 +83,9 @@ function vuexFactory(store, option) {
     sclass.__option.name = sclass.ClassName || sclass.constructor.name;
     name = sclass.ClassName || sclass.constructor.name;
     var s = {
-        state: {},
+        state: {
+            __option: option
+        },
         getters: {},
         actions: {},
         mutations: {}
@@ -249,7 +251,7 @@ var VuexStore = (function () {
     VuexStore.prototype.A_SEARCH = function (context, data) {
         var _this = this;
         if (this.__option.Request && this.__option.Request.search) {
-            return this.__option.Request.search(context.state.Where).then(function (rs) {
+            return this.__option.Request.search(data.Data || context.state.Where).then(function (rs) {
                 if (_this.__option.searchOnChange !== false)
                     context.commit('M_' + _this.__option.name.toLocaleUpperCase() + '_RESULT', rs);
                 return rs;

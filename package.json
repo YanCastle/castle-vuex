@@ -26,6 +26,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@ctsy/hook": "^0.0",
     "vue": "^2.6",
     "vuex": "^3.0"
   },
