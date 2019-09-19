@@ -1,8 +1,13 @@
 import * as vuex from 'vuex'
 import { delay_cb } from 'castle-function';
+import hook, { HookWhen } from '@ctsy/hook';
 const vue: any = require('vue')
 
 var Store: vuex.Store<any> | any;
+
+export const VuexHook = {
+    MapUpdate: 'MapUpdate',
+}
 /**
  * 排除这些属性和方法
  */
@@ -177,7 +182,7 @@ export function map_read(name: string, pkey: number | string) {
     if (!Store.state[name]) {
         throw new Error('Store State Not Found:' + name);
     }
-    if (!(Store.state[name].__option && Store.state.__option[name].Request && Store.state[name].__option.Request.pk)) {
+    if (!(Store.state[name].__option && Store.state[name].__option.Request && Store.state[name].__option.Request.pk)) {
         throw new Error('Store Options pk Not Defined:' + name)
     }
     if (Store.state[name].Maps[pkey]) {
@@ -340,6 +345,7 @@ export class VuexStore {
             for (let x of payload.L) {
                 state.Maps[x[this.__option.Request.pk]] = x;
             }
+            hook.emit(VuexHook.MapUpdate, HookWhen.After, state, payload);
         }
     }
     M_WHERE_W(state: VuexStore, payload: any) {

@@ -1,4 +1,7 @@
 import * as vuex from 'vuex';
+export declare const VuexHook: {
+    MapUpdate: string;
+};
 export declare var exclude: string[];
 export interface Request {
     search(Where?: SearchWhere): Promise<SearchResult>;

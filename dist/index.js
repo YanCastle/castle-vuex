@@ -37,8 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var vuex = require("vuex");
 var castle_function_1 = require("castle-function");
+var hook_1 = require("@ctsy/hook");
 var vue = require('vue');
 var Store;
+exports.VuexHook = {
+    MapUpdate: 'MapUpdate',
+};
 exports.exclude = [
     '__defineGetter__',
     '__defineSetter__',
@@ -188,7 +192,7 @@ function map_read(name, pkey) {
     if (!Store.state[name]) {
         throw new Error('Store State Not Found:' + name);
     }
-    if (!(Store.state[name].__option && Store.state.__option[name].Request && Store.state[name].__option.Request.pk)) {
+    if (!(Store.state[name].__option && Store.state[name].__option.Request && Store.state[name].__option.Request.pk)) {
         throw new Error('Store Options pk Not Defined:' + name);
     }
     if (Store.state[name].Maps[pkey]) {
@@ -353,6 +357,7 @@ var VuexStore = (function () {
                 var x = _a[_i];
                 state.Maps[x[this.__option.Request.pk]] = x;
             }
+            hook_1.default.emit(exports.VuexHook.MapUpdate, hook_1.HookWhen.After, state, payload);
         }
     };
     VuexStore.prototype.M_WHERE_W = function (state, payload) {
