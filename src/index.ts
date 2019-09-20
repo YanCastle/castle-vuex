@@ -29,7 +29,7 @@ export var exclude = [
  * 请求库
  */
 export interface Request {
-    search(Where?: SearchWhere): Promise<SearchResult>,
+    search(Where?: SearchWhere, conf?: any): Promise<SearchResult>,
     add(Data: Object): Promise<Object>
     save(pk: any, Data: Object): Promise<Object>
     del(pk: any): Promise<Object>
@@ -241,7 +241,7 @@ export class SearchResult {
 export class ActionParams {
     s: Function
     e: Function
-    Data: Object
+    Data: any
 }
 export function action_success(data: ActionParams, result: any) {
     if (data && data.s instanceof Function) {
@@ -273,7 +273,7 @@ export class VuexStore {
     }
     A_SEARCH(context: any, data?: ActionParams) {
         if (this.__option.Request && this.__option.Request.search) {
-            return this.__option.Request.search(data.Data || context.state.Where).then((rs) => {
+            return this.__option.Request.search((data.Data && data.Data.W) || context.state.Where, data.Data).then((rs) => {
                 if (this.__option.searchOnChange !== false)
                     context.commit('M_' + this.__option.name.toLocaleUpperCase() + '_RESULT', rs)
                 // action_success(data, rs)
