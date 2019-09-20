@@ -4,7 +4,7 @@ export declare const VuexHook: {
 };
 export declare var exclude: string[];
 export interface Request {
-    search(Where?: SearchWhere): Promise<SearchResult>;
+    search(Where?: SearchWhere, conf?: any): Promise<SearchResult>;
     add(Data: Object): Promise<Object>;
     save(pk: any, Data: Object): Promise<Object>;
     del(pk: any): Promise<Object>;
@@ -43,7 +43,7 @@ export declare class SearchResult {
 export declare class ActionParams {
     s: Function;
     e: Function;
-    Data: Object;
+    Data: any;
 }
 export declare function action_success(data: ActionParams, result: any): void;
 export declare function action_error(data: ActionParams, result: any): void;
