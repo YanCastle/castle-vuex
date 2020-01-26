@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -33,6 +34,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
+};
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var vuex = require("vuex");
@@ -122,7 +130,7 @@ function vuexFactory(store, option) {
                 s.state[k] = sclass[k];
         }
     });
-    var methods = Object.getOwnPropertyNames(Object.getPrototypeOf(store.prototype)).concat(Object.getOwnPropertyNames(store.prototype));
+    var methods = __spreadArrays(Object.getOwnPropertyNames(Object.getPrototypeOf(store.prototype)), Object.getOwnPropertyNames(store.prototype));
     methods.forEach(function (k) {
         if (/^([AGM])_([A-Z_\d]{1,})$/.test(k)) {
             var ks = k.replace(/^([AGM])_/, '$1_' + name.toUpperCase() + '_');
@@ -139,21 +147,28 @@ function vuexFactory(store, option) {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
-                                        _a.trys.push([0, 2, , 3]);
-                                        return [4, sclass[k].apply(sclass, [state, data, s])];
+                                        _a.trys.push([0, 5, , 6]);
+                                        rs = {};
+                                        if (!(data.s instanceof Function && data.e instanceof Function)) return [3, 2];
+                                        return [4, sclass[k].apply(sclass, [state, data.d, s])];
                                     case 1:
                                         rs = _a.sent();
                                         if (data.s instanceof Function) {
                                             data.s(rs);
                                         }
-                                        return [2, rs];
-                                    case 2:
+                                        return [3, 4];
+                                    case 2: return [4, sclass[k].apply(sclass, [state, data, s])];
+                                    case 3:
+                                        rs = _a.sent();
+                                        _a.label = 4;
+                                    case 4: return [2, rs];
+                                    case 5:
                                         error_1 = _a.sent();
                                         if (data.e instanceof Function) {
                                             data.e(error_1);
                                         }
-                                        return [3, 3];
-                                    case 3: return [2];
+                                        return [3, 6];
+                                    case 6: return [2];
                                 }
                             });
                         });
@@ -176,12 +191,12 @@ function vuexFactory(store, option) {
 function await_action(name, method, data) {
     var a = ['A', name.toUpperCase(), method.toUpperCase()].join('_');
     if (!Store._actions[a]) {
-        throw new Error('Account Not Found:' + a);
+        throw new Error('Action Not Found:' + a);
         return;
     }
     return new Promise(function (s, e) {
         Store.dispatch(a, {
-            Data: data,
+            d: data,
             s: s, e: e
         });
     });

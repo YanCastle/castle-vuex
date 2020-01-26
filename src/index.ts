@@ -125,9 +125,14 @@ function vuexFactory(store, option) {
                 case 'A_':
                     s.actions[ks] = async function (state, data) {
                         try {
-                            let rs = await sclass[k].apply(sclass, [state, data, s])
-                            if (data.s instanceof Function) {
-                                data.s(rs);
+                            let rs = {};
+                            if (data.s instanceof Function && data.e instanceof Function) {
+                                rs = await sclass[k].apply(sclass, [state, data.d, s])
+                                if (data.s instanceof Function) {
+                                    data.s(rs);
+                                }
+                            } else {
+                                rs = await sclass[k].apply(sclass, [state, data, s])
                             }
                             return rs;
                         } catch (error) {
@@ -159,13 +164,13 @@ function vuexFactory(store, option) {
 export function await_action(name: string, method: string, data: any) {
     let a = ['A', name.toUpperCase(), method.toUpperCase()].join('_');
     if (!Store._actions[a]) {
-        throw new Error('Account Not Found:' + a)
+        throw new Error('Action Not Found:' + a)
         return;
     }
     return new Promise((s, e) => {
         // data.s = s; data.e = j;
         Store.dispatch(a, {
-            Data: data,
+            d: data,
             s, e
         });
     })
