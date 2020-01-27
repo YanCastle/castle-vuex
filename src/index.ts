@@ -28,15 +28,15 @@ export var exclude = [
 /**
  * 请求库
  */
-export interface Request {
-    search(Where?: SearchWhere, conf?: any): Promise<SearchResult>,
-    add(Data: Object): Promise<Object>
-    save(pk: any, Data: Object): Promise<Object>
-    del(pk: any): Promise<Object>
-    adds(Data: Object): Promise<Object>
-    delW(W: Object): Promise<any>
-    pk: string,
-}
+// export interface Request {
+//     search(Where?: SearchWhere, conf?: any): Promise<SearchResult>,
+//     add(Data: Object): Promise<Object>
+//     save(pk: any, Data: Object): Promise<Object>
+//     del(pk: any): Promise<Object>
+//     adds(Data: Object): Promise<Object>
+//     delW(W: Object): Promise<any>
+//     pk: string,
+// }
 /**
  * Vuex配置
  */
@@ -86,9 +86,9 @@ function vuexFactory(store, option) {
     }
 
     var superProto = Object.getPrototypeOf(store.prototype)
-    if (superProto instanceof VuexStore) {
-        //需要控制继承关系
-    }
+    // if (superProto instanceof VuexStore) {
+    //需要控制继承关系
+    // }
     Object.keys(sclass).forEach((k) => {
         if (typeof sclass[k] == 'function') {
             if (/^([AGM])_([A-Z_\d]{1,})$/.test(k)) {
@@ -123,23 +123,24 @@ function vuexFactory(store, option) {
                     }
                     break;
                 case 'A_':
-                    s.actions[ks] = async function (state, data) {
-                        try {
-                            let rs = {};
-                            if (data.s instanceof Function && data.e instanceof Function) {
-                                rs = await sclass[k].apply(sclass, [state, data.d, s])
-                                if (data.s instanceof Function) {
-                                    data.s(rs);
-                                }
-                            } else {
-                                rs = await sclass[k].apply(sclass, [state, data, s])
-                            }
-                            return rs;
-                        } catch (error) {
-                            if (data.e instanceof Function) {
-                                data.e(error);
-                            }
-                        }
+                    s.actions[ks] = function (state, data) {
+                        return sclass[k].apply(sclass, [state, data, s])
+                        // try {
+                        //     let rs = {};
+                        //     if (data.s instanceof Function && data.e instanceof Function) {
+                        //         rs = await sclass[k].apply(sclass, [state, data.d, s])
+                        //         if (data.s instanceof Function) {
+                        //             data.s(rs);
+                        //         }
+                        //     } else {
+                        //         rs = await sclass[k].apply(sclass, [state, data, s])
+                        //     }
+                        //     return rs;
+                        // } catch (error) {
+                        //     if (data.e instanceof Function) {
+                        //         data.e(error);
+                        //     }
+                        // }
                     }
                     break;
                 case 'M_':
@@ -167,13 +168,14 @@ export function await_action(name: string, method: string, data: any) {
         throw new Error('Action Not Found:' + a)
         return;
     }
-    return new Promise((s, e) => {
-        // data.s = s; data.e = j;
-        Store.dispatch(a, {
-            d: data,
-            s, e
-        });
-    })
+    return Store.dispatch(a, data)
+    // return new Promise((s, e) => {
+    //     // data.s = s; data.e = j;
+    //     Store.dispatch(a, {
+    //         d: data,
+    //         s, e
+    //     });
+    // })
 }
 export const MapReaderCache: { [index: string]: any[] } = {
 
@@ -241,134 +243,134 @@ export class SearchResult {
     R?: any = {}
 }
 /**
- * 
+ *
  */
-export class ActionParams {
-    s: Function
-    e: Function
-    Data: any
-}
-export function action_success(data: ActionParams, result: any) {
-    if (data && data.s instanceof Function) {
-        data.s(result)
-    }
-}
-export function action_error(data: ActionParams, result: any) {
-    if (data && data.e instanceof Function) {
-        data.e(result)
-    }
-}
+// export class ActionParams {
+//     s: Function
+//     e: Function
+//     d: any
+// }
+// export function action_success(data: ActionParams, result: any) {
+//     if (data && data.s instanceof Function) {
+//         data.s(result)
+//     }
+// }
+// export function action_error(data: ActionParams, result: any) {
+//     if (data && data.e instanceof Function) {
+//         data.e(result)
+//     }
+// }
 /**
  * VuexStore类
  */
-export class VuexStore {
-    Result: SearchResult = new SearchResult()
-    Where: SearchWhere = new SearchWhere()
-    AllResult: SearchResult = new SearchResult();
-    AllowAll: boolean = false;
-    ClassName: string = "";
-    Maps: { [index: string]: any } = {};
-    __option: VuexOptions;
-    A_ALL(ctx: any) {
-        if (this.AllowAll) {
-            this.__option.Request.search({ N: 999999, P: 1, Keyword: '', W: {}, Sort: '' }).then((rs) => {
-                ctx.commit('M_' + this.__option.name.toLocaleUpperCase() + '_ALL', rs)
-            })
-        }
-    }
-    A_SEARCH(context: any, data?: ActionParams) {
-        if (this.__option.Request && this.__option.Request.search) {
-            return this.__option.Request.search((data.Data && data.Data.W) || context.state.Where, data.Data).then((rs) => {
-                if (this.__option.searchOnChange !== false)
-                    context.commit('M_' + this.__option.name.toLocaleUpperCase() + '_RESULT', rs)
-                // action_success(data, rs)
-                return rs;
-            })
-        }
-    }
-    A_ADD(context: any, data: ActionParams) {
-        if (this.__option.Request && this.__option.Request.add) {
-            return this.__option.Request.add(data.Data).then((rs) => {
-                if (this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
-                // action_success(data, rs)
-                return rs;
-            })
-        }
-    }
-    A_SAVE(context: any, data: ActionParams) {
-        if (this.__option.Request && this.__option.Request.save) {
-            return this.__option.Request.save(data.Data[this.__option.Request.pk], data.Data).then((rs) => {
-                if (this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
-                // action_success(data, rs)
-                return rs;
-            })
-        }
-    }
-    A_DEL(context: any, data: ActionParams) {
-        if (this.__option.Request && this.__option.Request.del) {
-            return this.__option.Request.del(data.Data[this.__option.Request.pk]).then((rs) => {
-                if (this.__option.searchOnChange !== false)
-                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
-                // action_success(data, rs)
-                return rs;
-            })
-        }
-    }
-    A_DEL_W(context: any, data: ActionParams) {
-        if (this.__option.Request && this.__option.Request.delW) {
-            return this.__option.Request.delW({ W: data.Data }).then((rs) => {
-                if (this.__option.searchOnChange !== false) {
-                    context.state.Where.W = {}
-                    context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', context.state.Where);
-                }
-                return rs;
-            })
-        }
-    }
-    G_RESULT(state: any) {
-        return state.Result;
-    }
-    G_WHERE(state: any) {
-        return state.Where;
-    }
-    G_ALL(state: any, store: any) {
-        if (state.AllResult.T <= 0) {
-            Store.dispatch(['A', state.ClassName.toUpperCase(), 'ALL'].join('_'), {})
-        }
-        return state.AllResult;
-    }
-    M_ALL(state: VuexStore, payload: SearchResult) {
-        state.AllResult = payload;
-    }
-    M_WHERE(state: VuexStore, payload: SearchWhere) {
-        state.Where = payload;
-    }
-    M_MAPS(state: VuexStore, payload: SearchResult) {
-        if (payload.L && payload.L.length > 0) {
-            for (let x of payload.L) {
-                state.Maps[x[this.__option.Request.pk]] = x;
-            }
-            hook.emit(VuexHook.MapUpdate, HookWhen.After, state, payload);
-        }
-    }
-    M_WHERE_W(state: VuexStore, payload: any) {
-        state.Where.W = payload;
-    }
-    M_WHERE_P(state: VuexStore, p: number) {
-        state.Where.P = p;
-    }
-    M_WHERE_N(state: VuexStore, n: number) {
-        state.Where.N = n;
-    }
-    M_WHERE_KEYWORD(state: VuexStore, keyword: string) {
-        state.Where.Keyword = keyword
-    }
-    M_WHERE_SORT(state: VuexStore, sort: string) {
-        state.Where.Sort = sort
-    }
-    M_RESULT(state: VuexStore, rs: SearchResult) {
-        state.Result = rs;
-    }
-}
+// export class VuexStore {
+//     Result: SearchResult = new SearchResult()
+//     Where: SearchWhere = new SearchWhere()
+//     AllResult: SearchResult = new SearchResult();
+//     AllowAll: boolean = false;
+//     ClassName: string = "";
+//     Maps: { [index: string]: any } = {};
+//     __option: VuexOptions;
+//     A_ALL(ctx: any) {
+//         if (this.AllowAll) {
+//             this.__option.Request.search({ N: 999999, P: 1, Keyword: '', W: {}, Sort: '' }).then((rs) => {
+//                 ctx.commit('M_' + this.__option.name.toLocaleUpperCase() + '_ALL', rs)
+//             })
+//         }
+//     }
+//     A_SEARCH(context: any, data?: ActionParams) {
+//         if (this.__option.Request && this.__option.Request.search) {
+//             return this.__option.Request.search((data.Data && data.Data.W) || context.state.Where, data.Data).then((rs) => {
+//                 if (this.__option.searchOnChange !== false)
+//                     context.commit('M_' + this.__option.name.toLocaleUpperCase() + '_RESULT', rs)
+//                 // action_success(data, rs)
+//                 return rs;
+//             })
+//         }
+//     }
+//     A_ADD(context: any, data: ActionParams) {
+//         if (this.__option.Request && this.__option.Request.add) {
+//             return this.__option.Request.add(data.Data).then((rs) => {
+//                 if (this.__option.searchOnChange !== false)
+//                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
+//                 // action_success(data, rs)
+//                 return rs;
+//             })
+//         }
+//     }
+//     A_SAVE(context: any, data: ActionParams) {
+//         if (this.__option.Request && this.__option.Request.save) {
+//             return this.__option.Request.save(data.Data[this.__option.Request.pk], data.Data).then((rs) => {
+//                 if (this.__option.searchOnChange !== false)
+//                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
+//                 // action_success(data, rs)
+//                 return rs;
+//             })
+//         }
+//     }
+//     A_DEL(context: any, data: ActionParams) {
+//         if (this.__option.Request && this.__option.Request.del) {
+//             return this.__option.Request.del(data.Data[this.__option.Request.pk]).then((rs) => {
+//                 if (this.__option.searchOnChange !== false)
+//                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', rs)
+//                 // action_success(data, rs)
+//                 return rs;
+//             })
+//         }
+//     }
+//     A_DEL_W(context: any, data: ActionParams) {
+//         if (this.__option.Request && this.__option.Request.delW) {
+//             return this.__option.Request.delW({ W: data.Data }).then((rs) => {
+//                 if (this.__option.searchOnChange !== false) {
+//                     context.state.Where.W = {}
+//                     context.dispatch('A_' + this.__option.name.toLocaleUpperCase() + '_SEARCH', context.state.Where);
+//                 }
+//                 return rs;
+//             })
+//         }
+//     }
+//     G_RESULT(state: any) {
+//         return state.Result;
+//     }
+//     G_WHERE(state: any) {
+//         return state.Where;
+//     }
+//     G_ALL(state: any, store: any) {
+//         if (state.AllResult.T <= 0) {
+//             Store.dispatch(['A', state.ClassName.toUpperCase(), 'ALL'].join('_'), {})
+//         }
+//         return state.AllResult;
+//     }
+//     M_ALL(state: VuexStore, payload: SearchResult) {
+//         state.AllResult = payload;
+//     }
+//     M_WHERE(state: VuexStore, payload: SearchWhere) {
+//         state.Where = payload;
+//     }
+//     M_MAPS(state: VuexStore, payload: SearchResult) {
+//         if (payload.L && payload.L.length > 0) {
+//             for (let x of payload.L) {
+//                 state.Maps[x[this.__option.Request.pk]] = x;
+//             }
+//             hook.emit(VuexHook.MapUpdate, HookWhen.After, state, payload);
+//         }
+//     }
+//     M_WHERE_W(state: VuexStore, payload: any) {
+//         state.Where.W = payload;
+//     }
+//     M_WHERE_P(state: VuexStore, p: number) {
+//         state.Where.P = p;
+//     }
+//     M_WHERE_N(state: VuexStore, n: number) {
+//         state.Where.N = n;
+//     }
+//     M_WHERE_KEYWORD(state: VuexStore, keyword: string) {
+//         state.Where.Keyword = keyword
+//     }
+//     M_WHERE_SORT(state: VuexStore, sort: string) {
+//         state.Where.Sort = sort
+//     }
+//     M_RESULT(state: VuexStore, rs: SearchResult) {
+//         state.Result = rs;
+//     }
+// }
