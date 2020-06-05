@@ -1,5 +1,11 @@
 
+import { ApiConfig } from '@ctsy/api-sdk'
 
+// ApiConfig.AppID = 'dev';
+// ApiConfig.Secret = 'dev2930sf9fwopfwe9';
+// ApiConfig.Key = 'dev';
+
+// ApiConfig.Host = '';
 export enum VuexHooks {
     /**
      * 登录成功
