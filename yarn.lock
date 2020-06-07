@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ctsy/api-sdk@^2.0.138":
-  version "2.0.138"
-  resolved "https://registry.yarnpkg.com/@ctsy/api-sdk/-/api-sdk-2.0.138.tgz#1ba61bb6dfc2375e5588bf579c3a0b20949d9cd5"
-  integrity sha512-bfbpYVIcehs1VJuvrb3bPpaDs/Uh5Bo8AagOMk7O95RFkkMtTT67xpz3iJP1CpIEaAE+d+z46XlbCfN5KUO1Eg==
+"@ctsy/api-sdk@^2.0.141":
+  version "2.0.141"
+  resolved "https://registry.npm.taobao.org/@ctsy/api-sdk/download/@ctsy/api-sdk-2.0.141.tgz#8aac7b1260c0f4d1e401a83838bf69d4f262ffd5"
+  integrity sha1-iqx7EmDA9NHkAag4OL9p1PJi/9U=
   dependencies:
     "@ctsy/covert" "*"
     "@ctsy/hook" "*"
