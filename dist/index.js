@@ -1,5 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const api_sdk_1 = require("@ctsy/api-sdk");
+api_sdk_1.ApiConfig.AppID = 'dev';
+api_sdk_1.ApiConfig.Secret = 'dev2930sf9fwopfwe9';
+api_sdk_1.ApiConfig.Key = 'dev';
 var VuexHooks;
 (function (VuexHooks) {
     VuexHooks["LoginSuccess"] = "vuex/LoginSuccess";
