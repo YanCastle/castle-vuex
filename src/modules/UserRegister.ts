@@ -1,6 +1,5 @@
 import { VuexModule, Module, Action } from "vuex-module-decorators";
 import User from "@ctsy/api-sdk/dist/modules/User";
-import UpLoad from "@ctsy/api-sdk/dist/modules/Upload";
 
 @Module({})
 export default class UserRegister extends VuexModule {
