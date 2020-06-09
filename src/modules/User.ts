@@ -87,7 +87,7 @@ export default class users extends VuexModule {
    *
    */
   @Action({ rawError: true })
-  async get_user_forget(data: any) {
+  async user_forget(data: any) {
     if (!Regs.account.test(data.Account)) {
       throw "账号格式错误";
     }
