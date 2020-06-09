@@ -11,6 +11,10 @@ import { SearchResult, SearchWhere } from "@ctsy/api-sdk/dist/lib";
 import hook, { HookWhen } from "@ctsy/hook";
 import { delay_cb, array_tree } from "castle-function";
 import { uniq } from "lodash";
+
+import CRegs from "../../dist/RegExp/index";
+const Regs = new CRegs.Regs();
+
 var WaitingUIDs: number[] = [];
 @Module({})
 export default class users extends VuexModule {
@@ -84,6 +88,12 @@ export default class users extends VuexModule {
    */
   @Action({ rawError: true })
   async get_user_forget(data: any) {
+    if (!Regs.account.test(data.Account)) {
+      throw "账号格式错误";
+    }
+    if (!Regs.pwd.test(data.PWD)) {
+      throw "密码格式错误";
+    }
     return await User.AuthApi.forget(data.Accout, data.PWD, data.VCode);
   }
 
@@ -100,7 +110,7 @@ export default class users extends VuexModule {
   /**
    *  获取到用户基础信息
    */
-  get info() {
+  get User_Info() {
     return this.UserInfo;
   }
   /*  用户登录
@@ -109,6 +119,13 @@ export default class users extends VuexModule {
    */
   @Action({ rawError: true })
   async get_user_login(data: any) {
+    if (!Regs.account.test(data.Account)) {
+      throw "账号格式错误";
+    }
+    if (!Regs.pwd.test(data.PWD)) {
+      throw "密码格式错误";
+    }
+
     let rs = await User.AuthApi.login(data.Account, data.PWD);
     this.context.commit("set_user_info", rs);
     return rs;
@@ -121,15 +138,28 @@ export default class users extends VuexModule {
    */
   async get_user_register(data: any) {
     //注册
+    if (!Regs.name.test(data.Name)) {
+      throw "不合法的姓名";
+    }
+    if (!Regs.nick.test(data.NickName)) {
+      throw "不合法的昵称";
+    }
+    if (!Regs.account.test(data.Account)) {
+      throw "账号格式错误";
+    }
+    if (!Regs.pwd.test(data.PWD)) {
+      throw "密码格式错误";
+    }
+
     return await User.AuthApi.regist(
       data.Name,
       data.NickName,
       data.Account,
       data.PWD,
-      -1,
-      1,
+      data.Sex || -1,
+      data.PUID || 1,
       "",
-      [],
+      data.Contacts || [],
       data.Avatar
     );
   }
