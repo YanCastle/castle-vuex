@@ -88,10 +88,10 @@ export default class users extends VuexModule {
    */
   @Action({ rawError: true })
   async user_forget(data: any) {
-    if (!Regs.account.test(data.Account)) {
+    if (!Regs.Account.test(data.Account)) {
       throw "账号格式错误";
     }
-    if (!Regs.pwd.test(data.PWD)) {
+    if (!Regs.PWD.test(data.PWD)) {
       throw "密码格式错误";
     }
     return await User.AuthApi.forget(data.Accout, data.PWD, data.VCode);
@@ -107,22 +107,17 @@ export default class users extends VuexModule {
   set_user_info(d) {
     this.UserInfo = d;
   }
-  /**
-   *  获取到用户基础信息
-   */
-  get User_Info() {
-    return this.UserInfo;
-  }
+
   /*  用户登录
    *
    * @param data
    */
   @Action({ rawError: true })
   async get_user_login(data: any) {
-    if (!Regs.account.test(data.Account)) {
+    if (!Regs.Account.test(data.Account)) {
       throw "账号格式错误";
     }
-    if (!Regs.pwd.test(data.PWD)) {
+    if (!Regs.PWD.test(data.PWD)) {
       throw "密码格式错误";
     }
 
@@ -138,16 +133,16 @@ export default class users extends VuexModule {
    */
   async get_user_register(data: any) {
     //注册
-    if (!Regs.name.test(data.Name)) {
+    if (!Regs.Name.test(data.Name)) {
       throw "不合法的姓名";
     }
-    if (!Regs.nick.test(data.NickName)) {
+    if (!Regs.Nick.test(data.NickName)) {
       throw "不合法的昵称";
     }
-    if (!Regs.account.test(data.Account)) {
+    if (!Regs.Account.test(data.Account)) {
       throw "账号格式错误";
     }
-    if (!Regs.pwd.test(data.PWD)) {
+    if (!Regs.PWD.test(data.PWD)) {
       throw "密码格式错误";
     }
 
