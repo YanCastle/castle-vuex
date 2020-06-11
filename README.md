@@ -38,16 +38,18 @@ export default class CollectionType extends VuexStore {
 
 ## 自定义正则
 
-###注意：
-
-> 当自定义正则后，基于自定义正则校验将会同时改变
-
 ```
+
 1.引用 import PublicReg from  'src/RegExp'
 2.初始化 let reg = new PublicReg.Regs()
 3.使用  reg.Name('张三') //true
 
 //自定义正则
+注意：
+
+> 当自定义正则后，基于自定义正则校验将会同时改变
+
+
 1.初始化 let custom = new PublicReg.CustomReg()
 2.使用 custom.Name =/\d{6,10}/
 3.调用  let reg = new PublicReg.Regs()
