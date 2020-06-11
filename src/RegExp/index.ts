@@ -57,35 +57,35 @@ namespace PublicReg {
     /**
      * 中文姓名  根据资料查询，中国人最长的中文名称为15
      */
-    Name = DefaultRegExp.Name || Reg.Name;
+    Name = Reg.Name || DefaultRegExp.Name;
     /**
      * 中文昵称
      */
-    Nick = DefaultRegExp.Nick || Reg.Nick;
+    Nick = Reg.Nick || DefaultRegExp.Nick;
     /**
      * 账号 不能以特殊字符开头，可以输入特殊字符
      */
-    Account = DefaultRegExp.Account || Reg.Account;
+    Account = Reg.Account || DefaultRegExp.Account;
     /**
      * 电话号码
      */
-    Phone = DefaultRegExp.Phone || Reg.Phone;
+    Phone = Reg.Phone || DefaultRegExp.Phone;
     /**
      * 短信验证码
      */
-    MessageCode = DefaultRegExp.MessageCode || Reg.MessageCode;
+    MessageCode = Reg.MessageCode || DefaultRegExp.MessageCode;
     /**
      * 邮箱
      */
-    Email = DefaultRegExp.Email || Reg.Email;
+    Email = Reg.Email || DefaultRegExp.Email;
     /**
      * 邮箱验证码
      */
-    EmailCode = DefaultRegExp.EmailCode || Reg.EmailCode;
+    EmailCode = Reg.EmailCode || DefaultRegExp.EmailCode;
     /**
      * 密码必须包含数字字母
      */
-    PWD = DefaultRegExp.PWD || Reg.PWD;
+    PWD = Reg.PWD || DefaultRegExp.PWD;
   }
 }
 
