@@ -1,9 +1,9 @@
 /* eslint-disable */
 import { ApiConfig } from "@ctsy/api-sdk";
 
-// ApiConfig.AppID = "dev";
-// ApiConfig.Secret = "dev2930sf9fwopfwe9";
-// ApiConfig.Key = "dev";
+ApiConfig.AppID = "dev";
+ApiConfig.Secret = "dev2930sf9fwopfwe9";
+ApiConfig.Key = "dev";
 // ApiConfig.Debug = true;
 
 // ApiConfig.Host = '';

@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ctsy/api-sdk@^2.0.164":
-  version "2.0.164"
-  resolved "https://registry.yarnpkg.com/@ctsy/api-sdk/-/api-sdk-2.0.164.tgz#77f1ed710e367ae6b3a2e5c7ab0ad77626cafc36"
-  integrity sha512-oIPMaSZpNikMZbv4qOMGRYwk8TgEmLxx5X14L6z1/PPADLYUq+lF6V0bKRepimc+3Tn7Xpi0ME3oLyITfxOMjA==
+"@ctsy/api-sdk@^2.0.166":
+  version "2.0.166"
+  resolved "https://registry.yarnpkg.com/@ctsy/api-sdk/-/api-sdk-2.0.166.tgz#07ae98c0ddebe0be05c2ac537f575f453705f3a9"
+  integrity sha512-KnSruH1/aYttChpnxLdBs19uNNTMbXgetiLGy9omhpy31hCaSkPRD+5aoG060jUhtZGw2nd5GMV7yJV+ytEYRQ==
   dependencies:
     "@ctsy/covert" "*"
     "@ctsy/hook" "*"

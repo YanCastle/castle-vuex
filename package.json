@@ -25,7 +25,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@ctsy/api-sdk": "^2.0.164",
+    "@ctsy/api-sdk": "^2.0.166",
     "@ctsy/hook": "^0.0.6",
     "castle-function": "^1.0.3",
     "vue": "^2.6",
