@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ApiConfig } from "@ctsy/api-sdk";
 
 // ApiConfig.AppID = "dev";

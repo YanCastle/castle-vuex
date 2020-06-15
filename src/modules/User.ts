@@ -12,7 +12,7 @@ import hook, { HookWhen } from "@ctsy/hook";
 import { delay_cb, array_tree } from "castle-function";
 import { uniq } from "lodash";
 
-import CRegs from "../../dist/RegExp/index";
+import CRegs from "../RegExp/index";
 const Regs = new CRegs.Regs();
 
 var WaitingUIDs: number[] = [];
@@ -76,7 +76,7 @@ export default class users extends VuexModule {
               { P: 1, N: UIDs.length }
             )
           );
-        } catch (error) {}
+        } catch (error) { }
       }
     });
     return true;
@@ -155,7 +155,8 @@ export default class users extends VuexModule {
       data.PUID || 1,
       "",
       data.Contacts || [],
-      data.Avatar
+      data.Avatar,
+      {}
     );
   }
 }
