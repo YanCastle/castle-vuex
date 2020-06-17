@@ -10,7 +10,7 @@ import User from "@ctsy/api-sdk/dist/modules/User";
 import { SearchResult, SearchWhere } from "@ctsy/api-sdk/dist/lib";
 import hook, { HookWhen } from "@ctsy/hook";
 import { delay_cb, array_tree } from "castle-function";
-import { uniq } from "lodash";
+import { uniq, difference } from "lodash";
 
 import CRegs from "../RegExp/index";
 const Regs = new CRegs.Regs();
@@ -37,11 +37,16 @@ export default class users extends VuexModule {
   }
   @Mutation
   set_users_result(data: any) {
+    for (let x of data.L) {
+      this.Map[x.UID] = x;
+    }
     this.Result = data;
   }
+
   get users_result() {
     return this.Result;
   }
+
   @Action({ rawError: true })
   async get_users_list(where: SearchWhere) {
     let w = where || this.Where;
@@ -52,6 +57,14 @@ export default class users extends VuexModule {
       );
       return this.Result;
     });
+  }
+
+  @Action({ rawError: true })
+  async save_user(User: any) {
+    if (!User.UID) {
+
+    }
+    return true;
   }
   /**
    * 获取用户数据，通过循环dispatch来完成堆积后延时20ms后开始读取数据
@@ -66,8 +79,9 @@ export default class users extends VuexModule {
     }
     delay_cb("update_get_user_map", 20, async () => {
       if (WaitingUIDs.length > 0) {
-        let UIDs = uniq(WaitingUIDs);
+        let UIDs = difference(uniq(WaitingUIDs), Object.keys(this.Map).map((v) => Number(v)));
         WaitingUIDs.length = 0;
+        if (UIDs.length == 0) { return; }
         try {
           this.context.commit(
             "set_users_map",
@@ -131,6 +145,7 @@ export default class users extends VuexModule {
    * 用户注册
    * @param data
    */
+  @Action({ rawError: true })
   async get_user_register(data: any) {
     //注册
     if (!Regs.Name.test(data.Name)) {

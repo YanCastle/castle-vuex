@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@ctsy/api-sdk@^2.0.166":
+"@ctsy/api-sdk@^2.0":
   version "2.0.166"
   resolved "https://registry.yarnpkg.com/@ctsy/api-sdk/-/api-sdk-2.0.166.tgz#07ae98c0ddebe0be05c2ac537f575f453705f3a9"
   integrity sha512-KnSruH1/aYttChpnxLdBs19uNNTMbXgetiLGy9omhpy31hCaSkPRD+5aoG060jUhtZGw2nd5GMV7yJV+ytEYRQ==
@@ -103,6 +103,11 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
+
+"@types/lodash@^4.14.155":
+  version "4.14.155"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.155.tgz#e2b4514f46a261fd11542e47519c20ebce7bc23a"
+  integrity sha512-vEcX7S7aPhsBCivxMwAANQburHBtfN9RdyXFk84IJmu2Z4Hkg1tOFgaslRiEqqvoLtbCBi6ika1EMspE+NZ9Lg==
 
 "@types/long@^4.0.1":
   version "4.0.1"
